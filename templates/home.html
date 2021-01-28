@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+    {% for post in posts %}
+        <p>"{{ post.title }}"&nbsp
+        by {{ post.user.username }}</p>
+        <p>{{ post.content }}</p>
+    {% endfor %}
+{% endblock %}

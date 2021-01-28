@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel=stylesheet type=text/css href="{{ url_for('static',filename='style.css') }}">
+        <title>My Wonderful Site</title>
+        {% block head %}
+        {% endblock %}
+    </head>
+        <body>
+        <div id="header">
+            <a href="{{ url_for('home') }}" class="header">Home</a>&nbsp
+            <a href="{{ url_for('about') }}" class="header">About Us</a>
+            <a href="{{ url_for('todolist') }}" class="header">To Do List</a>
+        </div>
+        {% block body %}
+        {% endblock %}
+        </div>
+    </body>
+</html>
