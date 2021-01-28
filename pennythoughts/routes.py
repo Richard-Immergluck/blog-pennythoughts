@@ -1,6 +1,6 @@
-from blog.models import User, Post, Todolist
+from pennythoughts.models import User, Post, Todolist
 from flask import render_template, url_for, request, redirect
-from blog import app, db
+from pennythoughts import app, db
 
 @app.route('/')
 
