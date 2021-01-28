@@ -1,4 +1,4 @@
-from pennythoughts import app as application
+from pennythoughts import app
     
 if __name__ == '__main__':
     app.run(debug=True)

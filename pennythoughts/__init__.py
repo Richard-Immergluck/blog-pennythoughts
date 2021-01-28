@@ -8,7 +8,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://c21022750:59djiCtLrWzzv
 
 db = SQLAlchemy(app)
 
-from app import routes
+from pennythoughts import routes
 
 
 
