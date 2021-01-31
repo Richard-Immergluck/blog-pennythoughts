@@ -24,11 +24,15 @@ def post(post_id):
 def register():
     form = RegistrationForm()
     if request.method == 'POST':
-        user = User(username=form.username.data, email=form.email.data, password=form.password.data)
+        user = User(firstname = form.firstname.data, lastname = form.lastname.data, username = form.username.data, email = form.email.data, password = form.password.data)
         db.session.add(user)
         db.session.commit()
-        return redirect(url_for('home'))
+        return redirect(url_for('thankyou'))
     return render_template('register.html', title='Register', form=form)
+
+@app.route('/thankyou')
+def thankyou():
+    return render_template('thankyou.html', title='thank you')
 
 @app.route('/todolist', methods=['POST','GET'])
 def todolist():
