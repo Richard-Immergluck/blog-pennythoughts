@@ -5,16 +5,17 @@
 {% endblock %}
 
 {% block body %}
-
+<br>
 <form method="POST" action="">
     {{ form.csrf_token }}
     {{ form.username.label }} {{ form.username }}
+    <br>
     {{ form.email.label }} {{ form.email }}
+    <br>
     {{ form.password.label }} {{ form.password }}
+    <br>
     {{ form.confirm_password.label }} {{ form.confirm_password }}
     <input type="submit" value="Register">
 </form>
-
-
 
 {% endblock %}
