@@ -13,6 +13,11 @@ def home():
 def about():
     return render_template('about.html', title='About')
 
+@app.route("/post/<int:post_id>")
+def post(post_id):
+    post = Post.query.get_or_404(post_id)
+    return render_template('post.html', title=post.title, post=post)
+
 @app.route('/todolist', methods=['POST','GET'])
 def todolist():
     if request.method == 'POST':
@@ -50,7 +55,7 @@ def update(id):
 
         try:
             db.session.commit()
-            return redirect('todolist')
+            return redirect('todolist.html')
         except:
             return 'Computer says no!'
 
