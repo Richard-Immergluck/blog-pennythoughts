@@ -1,6 +1,8 @@
-from pennythoughts.models import User, Post, Todolist
-from flask import render_template, url_for, request, redirect
 from pennythoughts import app, db
+from pennythoughts.models import User, Post, Todolist
+from pennythoughts.forms import RegistrationForm
+from flask import render_template, url_for, request, redirect, flash
+
 
 @app.route('/')
 
@@ -17,6 +19,16 @@ def about():
 def post(post_id):
     post = Post.query.get_or_404(post_id)
     return render_template('post.html', title=post.title, post=post)
+
+@app.route("/register", methods=['GET', 'POST'])
+def register():
+    form = RegistrationForm()
+    if request.method == 'POST':
+        user = User(username=form.username.data, email=form.email.data, password=form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        return redirect(url_for('home'))
+    return render_template('register.html', title='Register', form=form)
 
 @app.route('/todolist', methods=['POST','GET'])
 def todolist():
