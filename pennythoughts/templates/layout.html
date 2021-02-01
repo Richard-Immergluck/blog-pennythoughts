@@ -8,10 +8,14 @@
         {% endblock %}
     </head>
         <body>
+            <br>
         <div id="header">
             <a href="{{ url_for('home') }}" class="header">Home</a>&nbsp
             <a href="{{ url_for('about') }}" class="header">About Us</a>
             <a href="{{ url_for('todolist') }}" class="header">To Do List</a>
+            <a href="{{ url_for('register') }}" class="header">Register</a>
+            <a href="{{ url_for('login') }}" class="header">Login</a>
+            <a href="{{ url_for('todolist') }}" class="header">Log Out</a>
         </div>
         {% block body %}
         {% endblock %}
