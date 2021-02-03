@@ -1,12 +1,29 @@
 {% extends "layout.html" %}
 
-{% block title %}
-{% endblock %}
+{% block title %}HOME{% endblock %}
 
 {% block body %}
-    {% for post in posts %}
-        <a href="{{ url_for('post', post_id=post.id) }}">"{{ post.title }}"</a>
-        <p>"{{ post.title }}" &nbsp Author: {{ post.user.username}}</p>
-        <p>{{ post.content }}</p>
-    {% endfor %}
+
+<div class="container">
+    <div class="page-header">
+        <h1>Home Screen</h1>
+    </div>
+    <div class="jumbotron">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc velit lacus, posuere id ligula et, laoreet
+            hendrerit lacus. Cras eget faucibus augue. Pellentesque porta, purus vel cursus varius, nibh lorem luctus
+            justo, vel mattis tortor arcu eu massa. Proin vestibulum leo a lectus ullamcorper, nec tristique velit
+            tempus. Morbi mollis tincidunt malesuada. Nulla facilisi. Nunc at viverra massa</p>
+    </div>
+    <div class="contianer">
+        <div class="row">
+            <div class="col-lg-3 col-md-3"></div>
+        </div>s
+    </div>
+</div>
+{% for post in posts %}
+<a href="{{ url_for('post', post_id=post.id) }}">"{{ post.title }}"</a>
+<p>"{{ post.title }}" &nbsp Author: {{ post.user.username}}</p>
+<p>{{ post.content }}</p>
+{% endfor %}
+
 {% endblock %}

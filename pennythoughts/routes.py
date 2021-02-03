@@ -21,7 +21,7 @@ def post(post_id):
     post = Post.query.get_or_404(post_id)
     return render_template('post.html', title=post.title, post=post)
 
-@app.route("/register", methods=['GET', 'POST'])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
     if request.method == 'POST':
@@ -35,7 +35,7 @@ def register():
 def thankyou():
     return render_template('thankyou.html', title='thank you')
 
-@app.route("/login", methods=['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     if request.method == 'POST':
@@ -45,7 +45,7 @@ def login():
         return redirect(url_for('home'))
     return render_template('login.html', title='Login', form=form)
 
-@app.route("/logout")
+@app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('home'))
