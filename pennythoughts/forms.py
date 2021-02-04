@@ -1,17 +1,34 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, Regexp
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, Regexp, InputRequired
+from pennythoughts.models import User
 
 class RegistrationForm(FlaskForm):
     firstname = StringField('First Name', validators = [DataRequired(), Length(min=2,max=40)])
     lastname = StringField('Last Name', validators = [DataRequired(), Length(min=3,max=15)])
     username = StringField('Username', validators = [DataRequired(), Length(min=2,max=40)])
     email = StringField('Email', validators = [DataRequired(), Email()])
-    password = PasswordField('Password',validators = [DataRequired()])
+    password = PasswordField('Password',validators = [DataRequired(), Regexp('^(?=.*\d).{8,20}$', message='Your password should be between 6 and 20 characters and contain at least one number.')])
     confirm_password = PasswordField('Confirm Password', validators = [DataRequired(), EqualTo('password')])
     submit = SubmitField('Register')
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired(), Regexp('^(?=.*\d).{8,20}$', message='Your password should be between 6 and 20 characters and contain at least one number.')])
     submit = SubmitField('Login')
+
+class CommentForm(FlaskForm):
+    comment = StringField('Comment', validators=[InputRequired()])
+    submit = SubmitField('Post comment')
+
+def validate_username(self, username):
+    user = User.query.filter_by(username = username.data).first()
+    if user:
+        raise ValidationError('Your username already exists, please choose a different one.')
+
+def validate_email(self, email):
+    email = User.query.filter_by(email = email.data).first()
+    if user:
+        raise ValidationError('Your email already exists, please choose a different one.')
+
+password = PasswordField('Password', validators=[DataRequired(), Regexp('^(?=.*\d).{8,20}$', message='Your password should be between 6 and 20 characters and contain at least one number.')])

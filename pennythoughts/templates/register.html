@@ -22,4 +22,8 @@
     <input type="submit" value="Register">
 </form>
 
+{% for error in form.username.errors %}
+<span style="color: red;">[{{ error }}]</span>
+{% endfor %}
+
 {% endblock %}
