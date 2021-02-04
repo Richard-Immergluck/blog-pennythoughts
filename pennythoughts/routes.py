@@ -21,7 +21,7 @@ def post(post_id):
     post = Post.query.get_or_404(post_id)
     comments = Comment.query.filter(Comment.post_id == post.id)
     form = CommentForm()
-        return render_template('post.html', post=post, comments=comments, form=form)
+    return render_template('post.html', post=post, comments=comments, form=form)
 
 @app.route('/post/<int:post_id>/comment',methods=['GET','POST'])
 @login_required
@@ -46,24 +46,29 @@ def register():
         return redirect(url_for('thankyou'))
     return render_template('register.html', title='Register', form=form)
 
-@app.route('/thankyou')
-def thankyou():
-    return render_template('thankyou.html', title='thank you')
-
-@app.route('/login', methods=['GET', 'POST'])
+@app.route("/login",methods=['GET','POST'])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
-        if user is not None and user.verify_password(form.password.data): 
+        if user is not None and user.verify_password(form.password.data):
             login_user(user)
-        return redirect(url_for('home'))
-    return render_template('login.html', title='Login', form=form)
+            flash('Login successful!')
+            return redirect(url_for('home'))
+        flash('Invalid email address or password.')
+
+        return render_template('login.html',form=form)
+
+    return render_template('login.html',title='Login',form=form)
 
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('home'))
+
+@app.route('/thankyou')
+def thankyou():
+    return render_template('thankyou.html', title='thank you')
 
 @app.route('/todolist', methods=['POST','GET'])
 def todolist():

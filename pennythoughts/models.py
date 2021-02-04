@@ -1,6 +1,5 @@
 from datetime import datetime
-from pennythoughts import db
-from pennythoughts import login_manager
+from pennythoughts import login_manager, db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
@@ -17,6 +16,7 @@ class Post(db.Model):
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    is_admin=db.Column(db.Boolean,nullable=False,default=False)
     firstname = db.Column(db.String(40), unique=True, nullable=False)
     lastname = db.Column(db.String(40), unique=True, nullable=False)
     username = db.Column(db.String(40), unique=True, nullable=False)
@@ -52,6 +52,7 @@ class Comment(db.Model):
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     parent = db.relationship('Comment', backref='comment_parent', remote_side=id, lazy=True)
+    
     def __repr__(self):
         return f"Post('{self.date}', '{self.content}')"
 
