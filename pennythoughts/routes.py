@@ -70,11 +70,10 @@ def todolist():
 
 def delete(id):
     task_to_delete = Todolist.query.get_or_404(id)
-
     try:
         db.session.delete(task_to_delete)
         db.session.commit()
-        return redirect('todolist')
+        return redirect('/todolist')
     except:
         return 'There was an error'
 
@@ -87,9 +86,9 @@ def update(id):
 
         try:
             db.session.commit()
-            return redirect('todolist.html')
+            return redirect('/todolist')
         except:
-            return 'Computer says no!'
+            return 'There was an issue updating your task'
 
     else:
         return render_template('update.html', task=task)
