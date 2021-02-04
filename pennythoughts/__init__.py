@@ -14,13 +14,12 @@ db = SQLAlchemy(app)
 from pennythoughts import routes
 
 from flask_admin import Admin
-from flask_admin.contrib.sqla import ModelView
+from pennythoughts.views import AdminView
 from pennythoughts.models import User, Post, Comment
-
-admin = Admin(app, name='Admin panel', template_mode='bootstrap3')
-admin.add_view(ModelView(User, db.session))
-admin.add_view(ModelView(Post, db.session))
-admin.add_view(ModelView(Comment, db.session))
+admin = Admin(app,name='Admin panel',template_mode='bootstrap3')
+admin.add_view(AdminView(User, db.session))
+admin.add_view(AdminView(Post, db.session))
+admin.add_view(AdminView(Comment, db.session))
 
 
 
