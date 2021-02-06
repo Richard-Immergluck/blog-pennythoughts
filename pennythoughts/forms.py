@@ -4,8 +4,6 @@ from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationE
 from pennythoughts.models import User
 
 class RegistrationForm(FlaskForm):
-    firstname = StringField('First Name', validators = [DataRequired(), Length(min=2,max=40)])
-    lastname = StringField('Last Name', validators = [DataRequired(), Length(min=3,max=15)])
     username = StringField('Username', validators = [DataRequired(), Length(min=2,max=40)])
     email = StringField('Email', validators = [DataRequired(), Email()])
     password = PasswordField('Password',validators = [DataRequired(), Regexp('^(?=.*\d).{8,20}$', message='Your password should be between 6 and 20 characters and contain at least one number.')])
@@ -19,10 +17,11 @@ class RegistrationForm(FlaskForm):
 
     def validate_email(self, email):
         email = User.query.filter_by(email = email.data).first()
-        if user:
+        if email:
             raise ValidationError('Your email already exists, please choose a different one.')
 
 class LoginForm(FlaskForm):
+    username = StringField('Username', validators = [DataRequired(), Length(min=2,max=40)])
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Login')
@@ -30,3 +29,4 @@ class LoginForm(FlaskForm):
 class CommentForm(FlaskForm):
     comment = StringField('Comment', validators=[InputRequired()])
     submit = SubmitField('Post comment')
+
