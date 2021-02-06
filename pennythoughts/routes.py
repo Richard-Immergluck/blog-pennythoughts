@@ -16,6 +16,11 @@ def home():
 def about():
     return render_template('about.html', title='About')
 
+@app.route('/allposts')
+def allposts():
+    posts = Post.query.all()
+    return render_template('allposts.html', posts=posts)
+
 @app.route("/post/<int:post_id>")
 def post(post_id):
     post = Post.query.get_or_404(post_id)
@@ -63,6 +68,7 @@ def login():
     return render_template('login.html',title='Login',form=form)
 
 @app.route('/logout')
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('home'))

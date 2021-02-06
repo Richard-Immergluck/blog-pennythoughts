@@ -21,7 +21,6 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('Your email already exists, please choose a different one.')
 
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators = [DataRequired(), Length(min=2,max=40)])
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Login')
