@@ -1,16 +1,25 @@
+from datetime import datetime
 from pennythoughts import app, db
 from pennythoughts.models import User, Post, Todolist, Comment
 from pennythoughts.forms import RegistrationForm, LoginForm, CommentForm
 from flask import render_template, url_for, request, redirect, flash
 from flask_login import login_user, logout_user, login_required, current_user
 
-
 @app.route('/')
 
 @app.route('/home')
 def home():
-    posts = Post.query.all()
-    return render_template('home.html', posts=posts)
+    client_hour = datetime.now().hour    
+    if client_hour < 12:
+        greet = 'Good Morning'
+    elif client_hour >= 12 & client_hour <= 18:
+        greet = 'Good Afternoon'
+    elif client_hour >= 18 & client_hour <= 24:
+        greet = 'Good Evening'
+    
+    posts = Post.query.all()   
+
+    return render_template('home.html', greeting = greet, posts=posts)  
 
 @app.route('/about')
 def about():
