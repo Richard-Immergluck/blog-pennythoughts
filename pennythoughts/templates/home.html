@@ -20,17 +20,17 @@
             hendrerit lacus. Cras eget faucibus augue. Pellentesque porta, purus vel cursus varius, nibh lorem luctus
             justo, vel mattis tortor arcu eu massa. Proin vestibulum leo a lectus ullamcorper, nec tristique velit
             tempus. Morbi mollis tincidunt malesuada. Nulla facilisi. Nunc at viverra massa</p>
-        </div>
-    <div class="contianer">
-        <div class="row">
-            <div class="col-lg-3 col-md-3"></div>
-        </div>
     </div>
 </div>
+</div>
 {% for post in posts %}
-<a href="{{ url_for('post', post_id=post.id) }}">"{{ post.title }}"</a>
-<p>"{{ post.title }}" &nbsp Author: {{ post.user.username}}</p>
-<p>{{ post.content }}</p>
+<div class="container">
+    <div class="jumbotron">
+        <a href="{{ url_for('post', post_id=post.id) }}">"{{ post.title }}"</a>
+        <p>"{{ post.title }}" &nbsp Author: {{ post.user.username}}</p>
+        <p>{{ post.content }}</p>
+    </div>
+</div>
 {% endfor %}
 
 {% endblock %}
