@@ -44,7 +44,7 @@ def post_comment(post_id):
     if form.validate_on_submit():
         db.session.add(Comment(content=form.comment.data,post_id=post.id,author_id=current_user.id))
         db.session.commit()
-        flash("Your comment has been added to the post","success")
+        flash('Your comment has been added to the post', 'good')
         return redirect(f'/post/{post.id}')
     comments=Comment.query.filter(Comment.post_id==post.id)
     return render_template('post.html', post=post, comments=comments, form=form, greeting = greet)
@@ -56,7 +56,7 @@ def register():
         user = User(first_name = form.first_name.data, last_name = form.last_name.data, username = form.username.data, email = form.email.data, password = form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash('Registration successful!')
+        flash('Registration successful!', 'good')
         return redirect(url_for('home'))
     return render_template('register.html', title='Register', form=form, greeting = greet)
 
@@ -67,9 +67,9 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
         if user is not None and user.verify_password(form.password.data):
             login_user(user)
-            flash('Login successful!')
+            flash('Login successful!', 'good')
             return redirect(url_for('home'))
-        flash('Invalid email address or password.')
+        flash('Invalid email address or password.', 'bad')
 
         return render_template('login.html',form=form)
 
@@ -79,6 +79,7 @@ def login():
 @login_required
 def logout():
     logout_user()
+    flash('You have successfully logged out!', 'good')
     return redirect(url_for('home'))
 
 @app.route('/todolist', methods=['POST','GET'])
