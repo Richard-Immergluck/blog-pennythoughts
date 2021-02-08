@@ -4,6 +4,8 @@ from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationE
 from pennythoughts.models import User
 
 class RegistrationForm(FlaskForm):
+    first_name = StringField('First Name', validators = [DataRequired(), Length(min=2,max=40)])
+    last_name = StringField('First Name', validators = [DataRequired(), Length(min=2,max=40)])
     username = StringField('Username', validators = [DataRequired(), Length(min=2,max=40)])
     email = StringField('Email', validators = [DataRequired(), Email()])
     password = PasswordField('Password',validators = [DataRequired(), Regexp('^(?=.*\d).{8,20}$', message='Your password should be between 6 and 20 characters and contain at least one number.')])

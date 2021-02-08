@@ -8,6 +8,10 @@
 <br>
 <form method="POST" action="">
     {{ form.csrf_token }}
+    {{ form.first_name.label }} {{ form.first_name }}
+    <br>
+    {{ form.last_name.label }} {{ form.last_name }}
+    <br>
     {{ form.username.label }} {{ form.username }}
     <br>
     {{ form.email.label }} {{ form.email }}

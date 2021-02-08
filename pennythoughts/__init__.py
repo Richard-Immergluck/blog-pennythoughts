@@ -16,7 +16,7 @@ from pennythoughts import routes
 from flask_admin import Admin
 from pennythoughts.views import AdminView
 from pennythoughts.models import User, Post, Comment
-admin = Admin(app,name='Admin panel',template_mode='bootstrap3')
+admin = Admin(app, name='Admin panel', template_mode='bootstrap3')
 admin.add_view(AdminView(User, db.session))
 admin.add_view(AdminView(Post, db.session))
 admin.add_view(AdminView(Comment, db.session))

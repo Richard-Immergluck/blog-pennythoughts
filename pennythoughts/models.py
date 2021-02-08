@@ -22,7 +22,9 @@ class Post(db.Model):
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    is_admin=db.Column(db.Boolean,nullable=False,default=False)
+    is_admin = db.Column(db.Boolean,nullable=False,default=False)
+    first_name = db.Column(db.String(40), unique=True, nullable=False)
+    last_name = db.Column(db.String(40), unique=True, nullable=False)
     username = db.Column(db.String(40), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(128))
@@ -46,6 +48,8 @@ class User(UserMixin, db.Model):
 
 @login_manager.user_loader
 def load_user(user_id):
+    print(user_id)
+    print(User.query.get(int(user_id)))
     return User.query.get(int(user_id))
 
 class Comment(db.Model):

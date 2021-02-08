@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    {% block head %}{% endblock %}
     <title>{% block title %}{% endblock %}</title>
 </head>
 
@@ -32,12 +33,12 @@
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Account
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="login">Log In</a>
-                        <a class="dropdown-item" href="/logout">Log Out</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="register">Register</a>
-                    </div>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="login">Log In</a>
+                            <a class="dropdown-item" href="/logout">Log Out</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="register">Register</a>
+                        </div>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
@@ -49,7 +50,13 @@
             </form>
         </div>
     </nav>
-
+    <div class="container-fluid bg-dark text-light">
+        {% if current_user.is_authenticated %}
+        {{ greeting }} {{ current_user.first_name }}
+        {% elif current_user.is_anonymous %}
+        {{ greeting }} Visitor
+        {% endif %}
+    </div>
     <div>
         {% with messages = get_flashed_messages() %}
             {% if messages %}
@@ -61,11 +68,11 @@
             {% endif %}
         {% endwith %}
     </div>
-
-    {% block body %}
-    
-    {% endblock %}
-
+    {% block body %}{% endblock %}
+    <footer>
+        
+    </footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>

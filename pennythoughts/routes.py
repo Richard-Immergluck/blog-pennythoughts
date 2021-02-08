@@ -5,37 +5,36 @@ from pennythoughts.forms import RegistrationForm, LoginForm, CommentForm
 from flask import render_template, url_for, request, redirect, flash
 from flask_login import login_user, logout_user, login_required, current_user
 
+client_hour = datetime.now().hour    
+if client_hour < 12:
+    greet = 'Good Morning'
+elif client_hour >= 12 & client_hour <= 18:
+    greet = 'Good Afternoon'
+elif client_hour >= 18 & client_hour <= 24:
+    greet = 'Good Evening'
+
 @app.route('/')
 
 @app.route('/home')
 def home():
-    client_hour = datetime.now().hour    
-    if client_hour < 12:
-        greet = 'Good Morning'
-    elif client_hour >= 12 & client_hour <= 18:
-        greet = 'Good Afternoon'
-    elif client_hour >= 18 & client_hour <= 24:
-        greet = 'Good Evening'
-    
     posts = Post.query.all()   
-
     return render_template('home.html', greeting = greet, posts=posts)  
 
 @app.route('/about')
 def about():
-    return render_template('about.html', title='About')
+    return render_template('about.html', title='About', greeting = greet)
 
 @app.route('/allposts')
 def allposts():
     posts = Post.query.all()
-    return render_template('allposts.html', posts=posts)
+    return render_template('allposts.html', posts=posts, greeting = greet)
 
 @app.route("/post/<int:post_id>")
 def post(post_id):
     post = Post.query.get_or_404(post_id)
     comments = Comment.query.filter(Comment.post_id == post.id)
     form = CommentForm()
-    return render_template('post.html', post=post, comments=comments, form=form)
+    return render_template('post.html', post=post, comments=comments, form=form, greeting = greet)
 
 @app.route('/post/<int:post_id>/comment',methods=['GET','POST'])
 @login_required
@@ -48,18 +47,18 @@ def post_comment(post_id):
         flash("Your comment has been added to the post","success")
         return redirect(f'/post/{post.id}')
     comments=Comment.query.filter(Comment.post_id==post.id)
-    return render_template('post.html',post=post,comments=comments,form=form)
+    return render_template('post.html', post=post, comments=comments, form=form, greeting = greet)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(username = form.username.data, email = form.email.data, password = form.password.data)
+        user = User(first_name = form.first_name.data, last_name = form.last_name.data, username = form.username.data, email = form.email.data, password = form.password.data)
         db.session.add(user)
         db.session.commit()
         flash('Registration successful!')
         return redirect(url_for('home'))
-    return render_template('register.html', title='Register', form=form)
+    return render_template('register.html', title='Register', form=form, greeting = greet)
 
 @app.route("/login",methods=['GET','POST'])
 def login():
