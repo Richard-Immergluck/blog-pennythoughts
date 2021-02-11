@@ -1,0 +1,13 @@
+{% macro form_template(field) %}
+
+<label for="{{ field.name }}" class="visually-hidden">{{ field.label.text }}</label>
+<div class="container">
+    {{ field(class_='form-control', **kwargs)|safe }}
+    <ul>
+        {% for error in field.errors %}
+        <li style="color:red">{{ error }}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endmacro %}

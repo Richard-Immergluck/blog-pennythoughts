@@ -3,3 +3,7 @@ __pycache__/
 venv/
 .vscode/
 info.docs/
+
+# files
+package-lock.json
+package.json

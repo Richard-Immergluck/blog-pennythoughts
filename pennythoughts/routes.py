@@ -73,7 +73,7 @@ def login():
 
         return render_template('login.html',form=form)
 
-    return render_template('login.html',title='Login',form=form)
+    return render_template('login.html',title='Login',form=form, greeting = greet)
 
 @app.route('/logout')
 @login_required
@@ -96,7 +96,7 @@ def todolist():
             return 'There was an error'
     else:
         tasks = Todolist.query.order_by(Todolist.date_created).all()
-        return render_template('todolist.html', tasks=tasks)
+        return render_template('todolist.html', task = tasks, greeting = greet)
 
 @app.route('/delete/<int:id>')
 
@@ -123,4 +123,4 @@ def update(id):
             return 'There was an issue updating your task'
 
     else:
-        return render_template('update.html', task=task)
+        return render_template('update.html', task=task, greeting = greet)
