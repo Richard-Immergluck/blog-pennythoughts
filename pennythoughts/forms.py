@@ -5,11 +5,11 @@ from pennythoughts.models import User
 
 class RegistrationForm(FlaskForm):
     first_name = StringField('First Name', validators = [DataRequired(), Length(min=2,max=40)])
-    last_name = StringField('First Name', validators = [DataRequired(), Length(min=2,max=40)])
+    last_name = StringField('Last Name', validators = [DataRequired(), Length(min=2,max=40)])
     username = StringField('Username', validators = [DataRequired(), Length(min=2,max=40)])
     email = StringField('Email', validators = [DataRequired(), Email()])
-    password = PasswordField('Password',validators = [DataRequired(), Regexp('^(?=.*\d).{8,20}$', message='Your password should be between 6 and 20 characters and contain at least one number.')])
-    confirm_password = PasswordField('Confirm Password', validators = [DataRequired(), EqualTo('password')])
+    password = PasswordField('Password',validators = [DataRequired(), Regexp('^(?=.*\d).{8,20}$', message='Your password should be between 8 and 20 characters and contain at least one number.')])
+    confirm_password = PasswordField('Confirm Password', validators = [DataRequired(), EqualTo('password', 'Your passwords do not match')])
     submit = SubmitField('Register')                                                                                                      
 
     def validate_username(self, username):
@@ -23,9 +23,14 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('Your email already exists, please choose a different one.')
 
 class LoginForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired(), Email()])
+    email = StringField('Email', validators=[DataRequired(), Email(message='Invalid Email Address/Password')])
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Login')
+
+    def validate_email(self, email):
+        email = User.query.filter_by(email = email.data).first()
+        if email is None:
+            raise ValidationError('Invalid Email Address/Password')
 
 class CommentForm(FlaskForm):
     comment = StringField('Comment', validators=[InputRequired()])

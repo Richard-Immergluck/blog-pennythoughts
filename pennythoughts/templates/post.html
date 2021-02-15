@@ -1,14 +1,14 @@
 {% extends "layout.html" %}
 
 {% block title %}
-<h1>This is the posts page!</h1>
+{{ post.title }}
 {% endblock %}
 
 {% block body %}
-
-    <br>
+<br>
+<div class="container text-light">
     <p>"{{ post.title }}" &nbsp Author: {{  post.user.username }} </p>
-    <img src="{{ url_for('static', filename='img/' + post.image_file) }}">
+    <img src="{{ url_for('static', filename='img/' + post.image_file) }}" class="mr-3">
     <p>{{ post.content }}</p>
 
     {% for comment in comments %}
@@ -23,5 +23,5 @@
             </div>
         <div class="">{{ form.submit() }}</div>
     </form>
-
+</div>
 {% endblock body %}

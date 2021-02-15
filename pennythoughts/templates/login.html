@@ -1,19 +1,41 @@
 {% extends "layout.html" %}
 {% from "_form_template.html" import form_template %}
 
+
 {% block title %}Login{% endblock %}
 
 {% block body %}
-
-<div class="d-flex bg-dark text-center bg-secondary">
-    <form class="form-login">
-        <img src="/static/img/padlock-icon.jpg" alt="" height="50" width="50" class="mb-4">
-        <h1 class="h3 mb-3 font-weight-normal text-light">Login</h1>
-        {{ form.csrf_token }}
-        {{ form_template(form.email, placeholder=form.email.label.text) }}
-        {{ form_template(form.password, placeholder=form.password.label.text) }}
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
-    </form>
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col align-self-start">
+        </div>
+        <div class="col align-self-center">
+            <form class="form-signin mt-4 mb-4" method="POST" action="/login">
+                <img src="/static/img/padlock-icon.jpg" alt="" height="50" width="50" class="mb-2">
+                <h2 class="h3 mb-0 font-weight-normal text-light">Login</h2>
+                {{ form.csrf_token }}
+                <br>
+                {{ form_template(form.email, placeholder=form.email.label.text) }}
+                {{ form_template(form.password, placeholder=form.password.label.text) }}
+                {% for error in form.email.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+                <span style="color: red;">
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    {% for message in messages %}
+                    [{{ message }}]
+                    {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+                </span>
+                <br>
+                <button class="btn btn-lg btn-primary btn-block mt-3" type="submit">Login</button>
+            </form>
+        </div>
+        <div class="col align-self-end">
+        </div>
+    </div>
 </div>
-
 {% endblock %}

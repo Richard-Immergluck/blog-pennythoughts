@@ -1,16 +1,13 @@
 {% extends "layout.html" %}
 
-{% block title %}
-<h1>This is the posts page!</h1>
-{% endblock %}
+{% block title %}This is the posts page!{% endblock %}
 
 {% block body %}
-
-{% for post in posts %}
-<a href="{{ url_for('post', post_id=post.id) }}">"{{ post.title }}"</a>
-<p>"{{ post.title }}" &nbsp Author: {{ post.user.username}}</p>
-<img src="{{ url_for('static', filename='img/' + post.image_file) }}">
-<p>{{ post.content }}</p>
-{% endfor %}
-
+<div class="container text-light"></div>
+    {% for post in posts %}
+        <a href="{{ url_for('post', post_id=post.id) }}">"{{ post.title }}"</a>
+        <p>"{{ post.title }}" &nbsp Author: {{ post.user.username}}</p>
+        <img src="{{ url_for('static', filename='img/' + post.image_file) }}">
+        <p>{{ post.content }}</p>
+    {% endfor %}=
 {% endblock body %}

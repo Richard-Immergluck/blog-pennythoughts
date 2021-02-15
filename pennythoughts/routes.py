@@ -7,18 +7,18 @@ from flask_login import login_user, logout_user, login_required, current_user
 
 client_hour = datetime.now().hour    
 if client_hour < 12:
-    greet = 'Good Morning'
-elif client_hour >= 12 & client_hour <= 18:
-    greet = 'Good Afternoon'
-elif client_hour >= 18 & client_hour <= 24:
-    greet = 'Good Evening'
+    greet = '   Good Morning'
+elif 12 <= client_hour <= 18:
+    greet = '   Good Afternoon'
+else:
+    greet = '   Good Evening'
 
 @app.route('/')
 
 @app.route('/home')
 def home():
     posts = Post.query.all()   
-    return render_template('home.html', greeting = greet, posts=posts)  
+    return render_template('home.html', greeting=greet, posts=posts)  
 
 @app.route('/about')
 def about():
@@ -62,18 +62,16 @@ def register():
 
 @app.route("/login",methods=['GET','POST'])
 def login():
-    form = LoginForm()
+    form=LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user is not None and user.verify_password(form.password.data):
             login_user(user)
             flash('Login successful!', 'good')
             return redirect(url_for('home'))
-        flash('Invalid email address or password.', 'bad')
-
-        return render_template('login.html',form=form)
-
-    return render_template('login.html',title='Login',form=form, greeting = greet)
+        flash('Invalid Email Address/Password')
+        return render_template('login.html',title='Login', form=form, greeting=greet)
+    return render_template('login.html', title='Login', form=form, greeting=greet)
 
 @app.route('/logout')
 @login_required
