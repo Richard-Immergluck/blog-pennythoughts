@@ -2,7 +2,7 @@
 .form-signin {
     max-width: 350px;
     padding: 15px;
-    text-align: center
+    text-align: center;
 }
 
 /* Alert Flashing */
@@ -10,3 +10,34 @@
     color: #f8f9fa;
     background-color: #212529;
 }
+
+/* Nav Bar*/
+.navbar-custom {
+    height: 50px;
+}
+
+/* anchor styling */
+a.post-title {
+    text-decoration: none;
+    color: #119785;
+}
+
+/* Post Styling */
+#post-bubble {
+    background-color: rgb(199, 199, 199);
+    border: 3px solid #119785;
+    border-radius: 10px;
+}
+
+/* post-username styling*/
+.post-username {
+    font-size: large;
+    font-style: italic;
+    color: #119785;
+}
+
+/* post-date styling */
+.post-date {
+    font-size: small;
+}
+

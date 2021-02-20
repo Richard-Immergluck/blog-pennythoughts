@@ -17,7 +17,9 @@ else:
 
 @app.route('/home')
 def home():
-    posts = Post.query.all()   
+    posts = Post.query.all()
+    # date_minimal = Post.query.date
+    # print(date_minimal)
     return render_template('home.html', greeting=greet, posts=posts)  
 
 @app.route('/about')
@@ -34,7 +36,7 @@ def post(post_id):
     post = Post.query.get_or_404(post_id)
     comments = Comment.query.filter(Comment.post_id == post.id)
     form = CommentForm()
-    return render_template('post.html', post=post, comments=comments, form=form, greeting = greet)
+    return render_template('post.html', post=post, comments=comments, form=form, greeting=greet)
 
 @app.route('/post/<int:post_id>/comment',methods=['GET','POST'])
 @login_required

@@ -3,6 +3,7 @@ __pycache__/
 venv/
 .vscode/
 info.docs/
+Photoshop work/
 
 # files
 package-lock.json

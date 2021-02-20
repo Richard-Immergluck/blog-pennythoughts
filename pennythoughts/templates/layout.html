@@ -5,14 +5,21 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="/static/css/main.css">
+    <!-- The following script relates to a repository of icons which I am using throughout my website.
+    The repository can be found at https://fontawesome.com/icons?d=gallery  -->
+    <script src="https://kit.fontawesome.com/f7cf759d6f.js" crossorigin="anonymous"></script>
     {% block head %}{% endblock %}
     <title>{% block title %}{% endblock %}</title>
 </head>
 
+<!-- Body -->
 <body class="bg-dark">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <!-- NavBar -->
+    <nav class="navbar navbar-custom navbar-expand-lg navbar-dark bg-dark mt-4 mb-4">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/">Penny Thoughts</a>
+            <a class="navbar-brand" href="/">
+                <img class="img-fluid" src="/static/img/brand_header.png" alt="Penny Thoughts" width="200" height="20">
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -31,9 +38,9 @@
                 <ul class="navbar-nav justify-content-end mb-2 mb-lg-0">
                     <li class="nav-item">
                         {% if current_user.is_authenticated%}
-                            <a class="nav-link active" aria-current="page" href="logout">Logout</a>
+                        <a class="nav-link active" aria-current="page" href="logout">Logout</a>
                         {% else %}
-                            <a class="nav-link active" aria-current="page" href="login">Login</a>
+                        <a class="nav-link active" aria-current="page" href="login">Login</a>
                         {% endif %}
                     </li>
                     <li class="nav-item">
@@ -43,13 +50,11 @@
                         {% endif %}
                     </li>
                 </ul>
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
             </div>
         </div>
     </nav>
+
+    <!-- Greeting -->
     <div class="container-flex bg-dark text-light">
         {% if current_user.is_authenticated %}
         &nbsp;&nbsp;{{ greeting }} {{ current_user.first_name }}
@@ -57,8 +62,10 @@
         &nbsp;&nbsp;{{ greeting }} Visitor
         {% endif %}
     </div>
-{% block body %}{% endblock %}
+    {% block body %}{% endblock %}
     </div>
+
+    <!-- Footer -->
     <footer class="footer bg-dark text-white text-center text-lg-start">
         <!-- source code taken from https://mdbootstrap.com/docs/standard/navigation/footer/ -->
         <!-- Grid container -->
