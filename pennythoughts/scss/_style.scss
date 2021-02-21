@@ -1,3 +1,12 @@
+/* Registration page */
+/* Register button */
+#register {
+    background-color: #119785;
+    border: 1px solid #2d635c8f;
+    border-radius: 10px;
+    color: rgb(255, 255, 255);
+}
+
 /* Login page */
 .form-signin {
     max-width: 350px;
@@ -20,6 +29,13 @@
 a.post-title {
     text-decoration: none;
     color: #119785;
+}
+
+/* Home screen outer post-box styling*/
+#post-box {
+    background-color: rgb(48, 48, 48);
+    border: 3px solid #119785;
+    border-radius: 10px;
 }
 
 /* Post Styling */

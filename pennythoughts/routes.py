@@ -55,12 +55,12 @@ def post_comment(post_id):
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(first_name = form.first_name.data, last_name = form.last_name.data, username = form.username.data, email = form.email.data, password = form.password.data)
+        user = User(first_name=form.first_name.data, last_name=form.last_name.data, username=form.username.data, email=form.email.data, password=form.password.data)
         db.session.add(user)
         db.session.commit()
         flash('Registration successful!', 'good')
         return redirect(url_for('home'))
-    return render_template('register.html', title='Register', form=form, greeting = greet)
+    return render_template('register.html', title='Register', form=form, greeting=greet)
 
 @app.route("/login",methods=['GET','POST'])
 def login():
