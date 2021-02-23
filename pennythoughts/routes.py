@@ -1,6 +1,6 @@
 from datetime import datetime
 from pennythoughts import app, db
-from pennythoughts.models import User, Post, Todolist, Comment
+from pennythoughts.models import Dislikes, Likes, User, Post, Todolist, Comment
 from pennythoughts.forms import RegistrationForm, LoginForm, CommentForm
 from flask import render_template, url_for, request, redirect, flash
 from flask_login import login_user, logout_user, login_required, current_user
@@ -17,10 +17,14 @@ else:
 
 @app.route('/home')
 def home():
-    posts = Post.query.all()
-    # date_minimal = Post.query.date
-    # print(date_minimal)
-    return render_template('home.html', greeting=greet, posts=posts)  
+    q = request.args.get('q')
+    
+    if q:
+        posts=Post.query.filter(Post.title.contains(q) | Post.content.contains(q))
+    else:
+        posts=Post.query.all()
+
+    return render_template('home.html', greeting=greet, posts=posts)
 
 @app.route('/about')
 def about():
@@ -38,18 +42,42 @@ def post(post_id):
     form = CommentForm()
     return render_template('post.html', post=post, comments=comments, form=form, greeting=greet)
 
-@app.route('/post/<int:post_id>/comment',methods=['GET','POST'])
+@app.route('/post/<int:post_id>/comment', methods=['GET', 'POST'])
 @login_required
 def post_comment(post_id):
     post=Post.query.get_or_404(post_id)
     form=CommentForm()
     if form.validate_on_submit():
-        db.session.add(Comment(content=form.comment.data,post_id=post.id,author_id=current_user.id))
+        db.session.add(Comment(content=form.comment.data, post_id=post.id, author_id=current_user.id))
         db.session.commit()
         flash('Your comment has been added to the post', 'good')
         return redirect(f'/post/{post.id}')
     comments=Comment.query.filter(Comment.post_id==post.id)
     return render_template('post.html', post=post, comments=comments, form=form, greeting = greet)
+
+@app.route('/like/<int:post_id>/<action>')
+@login_required
+def like_action(post_id, action):
+    post = Post.query.filter_by(id=post_id).first_or_404()
+    if action == 'like':
+        current_user.like_post(post)
+        db.session.commit()
+    if action == 'unlike':
+        current_user.unlike_post(post)
+        db.session.commit()
+    return redirect(request.referrer)
+
+@app.route('/dislike/<int:post_id>/<action>')
+@login_required
+def dislike_action(post_id, action):
+    post = Post.query.filter_by(id=post_id).first_or_404()
+    if action == 'dislike':
+        current_user.dislike_post(post)
+        db.session.commit()
+    if action == 'undislike':
+        current_user.undislike_post(post)
+        db.session.commit()
+    return redirect(request.referrer)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():

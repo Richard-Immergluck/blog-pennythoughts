@@ -3,11 +3,105 @@
 {% block title %}This is the posts page!{% endblock %}
 
 {% block body %}
-<div class="container text-light"></div>
+<!-- Greeting -->
+<div class="container-flex bg-dark text-light">
+    {% if current_user.is_authenticated %}
+    &nbsp;&nbsp;{{ greeting }} {{ current_user.first_name }}
+    {% elif current_user.is_anonymous %}
+    &nbsp;&nbsp;{{ greeting }} Thinker
+    {% endif %}
+</div>
+<br>
+<div class="container-fluid bg-dark">
+
+    <!-- Alert Flashing -->
+    <!-- Code sourced from https://getbootstrap.com/docs/5.0/components/alerts/ and customised to enhance functionality and incorporate into my website design -->
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-dismissible fade show mb-0 bg-dark text-light" role="alert">
+        {{ message }}
+        <div>
+            <button type="button" class="btn-close mb-0" data-bs-dismiss="alert" aria-label="Close "></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <!-- Posts Flexbox -->
+    <div class="container-fluid">
+        <div class="container" id="post-box">
+
+            <!-- Post NavBar -->
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="posts-navbar">
+                <div class="container-fluid">
+                    <a class="navbar-brand">All Posts</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="#">Latest</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="#">Oldest</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="#">Most Liked</a>
+                            </li>
+                        </ul>
+                        <form class="d-flex" method="GET">
+                            <input class="form-control me-2" type="search" placeholder="Search" name="q">
+                            <button class="btn btn-outline-success" type="submit">Search</button>
+                        </form>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- List of posts -->
+            {% for post in posts %}
+            <div class="p-4" id="post-bubble">
+                <div class="row">
+                    <div class="col post-username">{{ post.user.username }}</div>
+                </div>
+                <div class="row">
+                    <div class="col post-date">{{ post.date }}</div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <a href="{{ url_for('post', post_id=post.id) }}" class="post-title">
+                            <h3>{{ post.title }}</h3>
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm">
+                        <a href="{{ url_for('post', post_id=post.id) }}"><i class="far fa-heart">&nbsp&nbsp{{
+                                post.likes.count() }}&nbsp&nbsplikes</i></a>
+                    </div>
+                    <div class="col-sm">
+                        <a href="{{ url_for('post', post_id=post.id) }}"><i class="far fa-comment-dots">&nbsp&nbsp{{
+                                post.comments.count() }}&nbsp&nbspComments</i></a>
+                    </div>
+                    <div class="col-sm"></div>
+                </div>
+            </div>
+            <br>
+            {% endfor %}
+        </div>
+    </div>
+
+
+
+<!-- <div class="container text-light"></div>
     {% for post in posts %}
         <a href="{{ url_for('post', post_id=post.id) }}">"{{ post.title }}"</a>
         <p>"{{ post.title }}" &nbsp Author: {{ post.user.username}}</p>
         <img src="{{ url_for('static', filename='img/' + post.image_file) }}">
         <p>{{ post.content }}</p>
-    {% endfor %}=
+    {% endfor %}= -->
 {% endblock body %}

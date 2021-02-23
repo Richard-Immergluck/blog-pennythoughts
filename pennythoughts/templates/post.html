@@ -5,23 +5,42 @@
 {% endblock %}
 
 {% block body %}
+
 <br>
 <div class="container text-light">
-    <p>"{{ post.title }}" &nbsp Author: {{  post.user.username }} </p>
+    <p>"{{ post.title }}" &nbsp Author: {{ post.user.username }} {{ post.likes.count() }} Likes</p>
     <img src="{{ url_for('static', filename='img/' + post.image_file) }}" class="mr-3">
     <p>{{ post.content }}</p>
+    <div>
+        {% if current_user.is_authenticated %}
+            {% if current_user.has_liked_post(post) %}
+                <a href="{{ url_for('like_action', post_id=post.id, action='unlike') }}" class="far fa-thumbs-up"></a>
+            {% elif current_user.has_disliked_post(post) %}
+                <a href="{{ url_for('dislike_action', post_id=post.id, action='undislike') }}" class="far fa-thumbs-down"></a>
+            {% else %}
+                <a href="{{ url_for('like_action', post_id=post.id, action='like') }}" class="far fa-thumbs-up"></a>
+                <a href="{{ url_for('dislike_action', post_id=post.id, action='dislike') }}" class="far fa-thumbs-down"></a>
+            {% endif %}
+            {{ post.likes.count() }} Likes
+            {{ post.dislikes.count() }} Dislikes
+        {% else %}
+        {{ post.likes.count() }} Likes
+        {{ post.dislikes.count() }} Dislikes
+        {% endif %}
+    </div>
 
     {% for comment in comments %}
-        <p>"{{ comment.content }}"&nbsp<small>Author: {{ comment.user.username }}</small></p>
+    <p>"{{ comment.content }}"&nbsp<small>Author: {{ comment.author_id.username }}</small></p>
     {% endfor %}
     <form method="POST" action="{{ url_for('post_comment', post_id=post.id) }}">
         {{ form.hidden_tag() }}
-            <div class="">
-                {{ form.comment.label }} {{ form.comment }} 
-                {% for error in form.comment.errors %}<span style="color: red;">[{{ error }}]</span>
-                {% endfor %}
-            </div>
+        <div class="">
+            {{ form.comment.label }} {{ form.comment }}
+            {% for error in form.comment.errors %}<span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
         <div class="">{{ form.submit() }}</div>
     </form>
+
 </div>
 {% endblock body %}

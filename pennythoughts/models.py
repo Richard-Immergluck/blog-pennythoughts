@@ -1,14 +1,19 @@
 from datetime import datetime
+from sqlalchemy.orm import backref
 from pennythoughts import login_manager, db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
-class Todolist(db.Model):
+class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    content =  db.Column(db.String(200), nullable=False)
-    completed = db.Column(db.Integer, default=0)
-    date_created = db.Column(db.DateTime, default=datetime.utcnow)    
-    
+    date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    content = db.Column(db.Text, nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    def __repr__(self):
+        return f"Post('{self.date}', '{self.content}')"
+
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
@@ -16,13 +21,16 @@ class Post(db.Model):
     content = db.Column(db.Text, nullable=False)
     image_file = db.Column(db.String(40), nullable=False, default='default.jpg')
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    comments = db.relationship('Comment', backref='owner', lazy='dynamic')
+    likes = db.relationship('Likes', backref='liked', lazy='dynamic')
+    dislikes = db.relationship('Dislikes', backref='disliked', lazy='dynamic')
 
     def __repr__(self):
         return f"Post('{self.date}', '{self.title}', '{self.content}')"
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    is_admin = db.Column(db.Boolean,nullable=False,default=False)
+    is_admin = db.Column(db.Boolean, nullable=False, default=False)
     first_name = db.Column(db.String(40), unique=True, nullable=False)
     last_name = db.Column(db.String(40), unique=True, nullable=False)
     username = db.Column(db.String(40), unique=True, nullable=False)
@@ -30,11 +38,13 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     password = db.Column(db.String(60), nullable=False)
     post = db.relationship('Post', backref='user', lazy=True)
-    comment = db.relationship('Comment', backref='user', lazy=True)
+    comment = db.relationship('Comment', backref='owns', lazy=True)
+    likes = db.relationship('Likes', backref='likes', lazy=True)
+    dislikes = db.relationship('Dislikes', backref='dislikes', lazy=True)
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}')"
-    
+
     @property
     def password(self):
         raise AttributeError('password is not a readable attribute')
@@ -46,19 +56,46 @@ class User(UserMixin, db.Model):
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+    def like_post(self, post):
+        if not self.has_liked_post(post):
+            like = Likes(author_id=self.id, post_id=post.id)
+            db.session.add(like)
+
+    def dislike_post(self, post):
+        if not self.has_disliked_post(post):
+            dislike = Dislikes(author_id=self.id, post_id=post.id)
+            db.session.add(dislike)
+
+    def unlike_post(self, post):
+        if self.has_liked_post(post):
+            Likes.query.filter_by(author_id=self.id, post_id=post.id).delete()
+    
+    def undislike_post(self, post):
+        if self.has_disliked_post(post):
+            Dislikes.query.filter_by(author_id=self.id, post_id=post.id).delete()
+
+    def has_liked_post(self, post):
+        return Likes.query.filter(Likes.author_id == self.id, Likes.post_id == post.id).count() > 0
+
+    def has_disliked_post(self, post):
+        return Dislikes.query.filter(Dislikes.author_id == self.id, Dislikes.post_id == post.id).count() > 0
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-class Comment(db.Model):
+class Likes(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    content = db.Column(db.Text, nullable=False)
-    parent_id = db.Column(db.Integer, db.ForeignKey('comment.id'), nullable=True)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    parent = db.relationship('Comment', backref='comment_parent', remote_side=id, lazy=True)
-    
-    def __repr__(self):
-        return f"Post('{self.date}', '{self.content}')"
 
+class Dislikes(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+class Todolist(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String(200), nullable=False)
+    completed = db.Column(db.Integer, default=0)
+    date_created = db.Column(db.DateTime, default=datetime.utcnow)

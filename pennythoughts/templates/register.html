@@ -8,12 +8,10 @@ Register
 {% block body %}
 <div class="container">
     <div class="row">
-        <div class="col-md-4 align-self-start">
-        </div>
-        <div class="col-md-6 align-self-center">
-            <form class="text-center mt-4 mb-4 bg-light" method="POST" action="">
+        <div class="col-8 border order-sm-second" id="registration-form">
+            <form class="container" method="POST" action="">
                 <img src="/static/img/padlock-icon.jpg" alt="" height="50" width="50" class="mb-2">
-                <h2 class="h3 mb-4 font-weight-normal text-dark">Register</h2>
+                <h2 class="mb-3">Register</h2>
                 {{ form.csrf_token }}
                 
                 {{ form_template(form.first_name, placeholder=form.first_name.label.text) }}
@@ -39,11 +37,12 @@ Register
                 {% for error in form.confirm_password.errors %}
                 <span style="color: red;">[{{ error }}]</span>
                 {% endfor %}
-
                 <button class="btn btn-lg btn-block mt-3" id="register" type="submit" value="Register">Register</button>
             </form>
         </div>
-        <div class="col-md-3 align-self-end">
+        <div class="col-2 order-sm-first">
+        </div>
+        <div class="col-2 order-sm-last">
         </div>
     </div>
 </div>
