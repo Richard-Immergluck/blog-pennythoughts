@@ -1,6 +1,6 @@
 # Directories
 __pycache__/
-venv/
+env/
 .vscode/
 info.docs/
 Photoshop work/

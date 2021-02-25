@@ -1,0 +1,40 @@
+{% from "_form_template.html" import form_template %}
+{% extends "layout.html" %}
+
+{% block title %}Contact{% endblock %}
+
+{% block body %}
+
+<form class="container" method="POST" action="" id="contact_form">
+    <img src="/static/img/padlock-icon.jpg" alt="" height="50" width="50" class="mb-2">
+    <h2 class="mb-3">Contact</h2>
+    
+    {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+    {% endfor %}
+    
+    {{ form.csrf_token }}
+    
+    {{ form_template(form.name, placeholder=form.name.label.text) }}
+    {% for error in form.name.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+    
+    {{ form_template(form.email, placeholder=form.email.label.text) }}
+    {% for error in form.email.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+
+    {{ form_template(form.subject, placeholder=form.subject.label.text) }}
+    {% for error in form.subject.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+
+    {{ form_template(form.message, placeholder=form.message.label.text) }}
+    {% for error in form.message.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+
+    <button class="btn btn-lg btn-block mt-3" id="contact" type="submit" value="Register">Register</button>
+</form>
+{% endblock %}

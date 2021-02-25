@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, TextField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, Regexp, InputRequired
 from pennythoughts.models import User
 
@@ -35,4 +35,12 @@ class LoginForm(FlaskForm):
 class CommentForm(FlaskForm):
     comment = StringField('Comment', validators=[InputRequired()])
     submit = SubmitField('Post comment')
+
+class ContactForm(FlaskForm):
+    name = TextField("Name", validators=[DataRequired("Please enter your name")])
+    email = TextField("Email", validators=[DataRequired(), Email("Please include your Email Address")])
+    subject = TextField("Subject", validators=[DataRequired("Please include a Subject")])
+    message = TextAreaField("Message", validators=[DataRequired("Please enter a message")])
+    submit = SubmitField("Send")
+
 

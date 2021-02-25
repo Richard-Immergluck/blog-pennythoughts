@@ -1,11 +1,14 @@
 from datetime import datetime
 from pennythoughts import app, db
-from pennythoughts.models import Dislikes, Likes, User, Post, Todolist, Comment
-from pennythoughts.forms import RegistrationForm, LoginForm, CommentForm
+from pennythoughts.models import Likes, User, Post, Todolist, Comment, Tag
+from pennythoughts.forms import ContactForm, RegistrationForm, LoginForm, CommentForm
 from flask import render_template, url_for, request, redirect, flash
 from flask_login import login_user, logout_user, login_required, current_user
+from sqlalchemy import desc, asc
+from sqlalchemy.sql import func
+from flask_mail import Message, Mail
 
-client_hour = datetime.now().hour    
+client_hour = datetime.now().hour
 if client_hour < 12:
     greet = '   Good Morning'
 elif 12 <= client_hour <= 18:
@@ -15,16 +18,60 @@ else:
 
 @app.route('/')
 
+@app.route('/user/<username>')
+@login_required
+def user(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    posts = Post.query.order_by(desc(Post.date)).all()
+    tag = Tag.query.all()
+    return render_template('user.html', greeting=greet, user=user, posts=posts, tag=tag)
+
 @app.route('/home')
 def home():
-    q = request.args.get('q')
-    
-    if q:
-        posts=Post.query.filter(Post.title.contains(q) | Post.content.contains(q))
+    tag = Tag.query.all()
+    query = request.args.get('query')
+    if query:
+        posts = Post.query.filter(Post.title.contains(query) | Post.content.contains(query))
     else:
-        posts=Post.query.all()
+        posts = Post.query.order_by(desc(Post.date)).limit(10).all()
+    return render_template('home.html', greeting=greet, posts=posts, tag=tag)
 
-    return render_template('home.html', greeting=greet, posts=posts)
+@app.route('/home/newest')
+def newest():
+    query = request.args.get('query')
+    if query:
+        posts = Post.query.filter(Post.title.contains(query) | Post.content.contains(query))
+    else:
+        posts = Post.query.order_by(desc(Post.date)).limit(10).all()
+    return render_template('newest.html', greeting=greet, posts=posts)
+
+@app.route('/home/oldest')
+def oldest():
+    query = request.args.get('query')
+    if query:
+        posts = Post.query.filter(Post.title.contains(query) | Post.content.contains(query))
+    else:
+        posts = Post.query.order_by(asc(Post.date)).limit(10).all()
+    return render_template('oldest.html', greeting=greet, posts=posts)
+
+@app.route('/home/commented')
+def commented():
+    query = request.args.get('query')
+    if query:
+        posts = Post.query.filter(Post.title.contains(query) | Post.content.contains(query))
+    else:
+        posts = posts = Post.query.join(Comment).group_by(Post.id).order_by(func.count().desc()).limit(10).all()
+    return render_template('commented.html', greeting=greet, posts=posts)
+
+@app.route('/home/likes')
+def likes():
+    query = request.args.get('query')
+    
+    if query:
+        posts = Post.query.filter(Post.title.contains(query) | Post.content.contains(query))
+    else:
+        posts = Post.query.join(Likes).group_by(Post.id).order_by(func.count().desc()).limit(10).all()
+    return render_template('likes.html', greeting=greet, posts=posts)
 
 @app.route('/about')
 def about():
@@ -38,7 +85,7 @@ def allposts():
 @app.route("/post/<int:post_id>")
 def post(post_id):
     post = Post.query.get_or_404(post_id)
-    comments = Comment.query.filter(Comment.post_id == post.id)
+    comments = Comment.query.order_by(Comment.date.desc())
     form = CommentForm()
     return render_template('post.html', post=post, comments=comments, form=form, greeting=greet)
 
@@ -79,6 +126,11 @@ def dislike_action(post_id, action):
         db.session.commit()
     return redirect(request.referrer)
 
+@app.route('/tags/<slug>')
+def tag_detail(slug):
+    tag = Tag.query.filter(Tag.slug==slug).first()
+    return render_template('/tag_detail.html', tag=tag)
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
@@ -109,6 +161,25 @@ def logout():
     logout_user()
     flash('You have successfully logged out!', 'good')
     return redirect(url_for('home'))
+
+@app.route('/contact', methods=['GET', 'POST'])
+def contact():
+    form = ContactForm()
+    if request.method == 'POST':
+        if form.validate_on_submit() == False:
+            flash('All fields are required.')
+            return render_template('contact.html', form=form)
+        else:
+            mail = Mail()
+            msg = Message(form.subject.data, sender='rimmergluck@googlemail.com', recipients=['rimmergluck@googlemail.com'])
+            msg.body = """From: %s <%s> %s""" % (form.name.data, form.email.data, form.message.data)
+            mail.send(msg)
+            flash('Your form was posted!', 'good')
+            return redirect(url_for('home'))
+    elif request.method == 'GET':
+        return render_template('contact.html', form=form, )
+
+    
 
 @app.route('/todolist', methods=['POST','GET'])
 def todolist():

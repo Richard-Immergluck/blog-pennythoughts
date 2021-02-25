@@ -2,6 +2,8 @@
 
 {% block title %}HOME{% endblock %}
 
+{% block message %}{% endblock %}
+
 {% block body %}
 
 <!-- Greeting -->
@@ -9,7 +11,7 @@
     {% if current_user.is_authenticated %}
     &nbsp;&nbsp;{{ greeting }} {{ current_user.first_name }}
     {% elif current_user.is_anonymous %}
-    &nbsp;&nbsp;{{ greeting }} Visitor
+    &nbsp;&nbsp;{{ greeting }} Thinker
     {% endif %}
 </div>
 <br>
@@ -48,10 +50,10 @@
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
-                                    Sort
+                                    Most Commented
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="/home/newest">Newest first</a></li>
+                                    <li><a class="dropdown-item" href="/home/newest">Newest First</a></li>
                                     <li><a class="dropdown-item" href="/home/oldest">Oldest first</a></li>
                                     <li><a class="dropdown-item" href="/home/commented">Most Commented</a></li>
                                     <li><a class="dropdown-item" href="/home/likes">Most Liked</a></li>
@@ -83,14 +85,6 @@
                         </a>
                     </div>
                 </div>
-                {% if post.tags.count() %}
-                <div class="" id="tag-div">
-                    {% for tag in post.tags %}
-                        <span class="button" id="tag-button">
-                            <a href="{{ url_for('tag_detail', slug = tag.slug) }}">{{ tag.title }}</span></a>
-                    {% endfor %}    
-                </div>
-                {% endif %}
                 <div class="row">
                     <div class="col-sm">
                         <a href="{{ url_for('post', post_id=post.id) }}"><i class="far fa-heart">&nbsp&nbsp{{
