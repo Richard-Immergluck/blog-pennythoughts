@@ -1,6 +1,6 @@
 {% macro form_template(field) %}
 <label for="{{ field.name }}" class="visually-hidden">{{ field.label.text }}</label>
-<div class="container mb-3">
+<div class="container-flex mb-3">
     {{ field(class_='form-control', **kwargs)|safe }}
 </div>
 {% endmacro %}

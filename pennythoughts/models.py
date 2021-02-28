@@ -5,12 +5,12 @@ from sqlalchemy.orm import backref
 from pennythoughts import login_manager, db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+from hashlib import md5
 
 # function to create urls for slugs
 def slugify(s):
     RegEx = r'[^\w+]'
     return re.sub(RegEx, '-', s)
-
 
 # Table for many to many relationship between posts and tags
 posts_tags = db.Table('posts_tags',
@@ -48,9 +48,9 @@ class Comment(db.Model):
     content = db.Column(db.Text, nullable=False)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-
+    
     def __repr__(self):
-        return f"Post('{self.date}', '{self.content}')"
+        return f"Post({self.post_id}'{self.date}', '{self.content}')"
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -77,6 +77,7 @@ class Post(db.Model):
 
     def __repr__(self):
         return f"Post('{self.date}', '{self.title}', '{self.content}')"
+    
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -129,16 +130,12 @@ class User(UserMixin, db.Model):
 
     def has_disliked_post(self, post):
         return Dislikes.query.filter(Dislikes.author_id == self.id, Dislikes.post_id == post.id).count() > 0
+    
+    def avatar(self, size):
+        avatar = md5(self.email.lower().encode('utf-8')).hexdigest()
+        return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(avatar, size)
 
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
-
-class Todolist(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.String(200), nullable=False)
-    completed = db.Column(db.Integer, default=0)
-    date_created = db.Column(db.DateTime, default=datetime.utcnow)
-
-
 

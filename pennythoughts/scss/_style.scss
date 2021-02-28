@@ -1,9 +1,10 @@
 /* GLOBAL*/
 
 /* Blog Header */
-/* Logo related */
 #blog-header-div {
     border-bottom: 2px solid #6e928d;
+    margin-top: 20px;
+    padding-top: 20px;
 }
 
 #logo-div {
@@ -22,36 +23,30 @@
     font-family: "Bubblegum Sans", cursive;
 }
 
-/* Registration page */
-
-#registration-form {
-    text-align: center;
-    color:#119785;
-    font-family: "Bubblegum Sans", cursive;
-    padding: 1px;
+/* Home Page */
+#title-div {
+    margin-bottom: 10px;
+}
+#tag-button-div {
+    margin-bottom: 20px;
 }
 
-/* Register button */
-#register {
+#tag-button {
     background-color: #119785;
-    border: 1px solid #2d635c8f;
+    border: 1px solid #018d6a8f;
     border-radius: 10px;
-    color: rgb(255, 255, 255);
+    padding-left: 6px;
+    padding-right: 4px;
+    padding-top: 1px;
+    padding-bottom: 4px;
+    text-decoration-line: none;
+    color: black;
 }
 
-/* Login page */
-.form-signin {
-    max-width: 350px;
-    padding: 15px;
-    text-align: center;
+#like-button{
+    text-decoration: none;
+    color: black;
 }
-
-/* Alert Flashing */
-.alert {
-    color: #f8f9fa;
-    background-color: #212529;
-}
-
 /* anchor styling */
 a.post-title {
     text-decoration: none;
@@ -84,6 +79,67 @@ a.post-title {
 /* post-date styling */
 .post-date {
     font-size: small;
+}
+
+
+/* Registration page */
+
+#registration-form {
+    text-align: center;
+    color:#119785;
+    font-family: "Bubblegum Sans", cursive;
+    padding: 1px;
+    min-width: 320px;
+    max-width: 400px;
+}
+
+/* Register button */
+#register-button {
+    background-color: #119785;
+    border: 1px solid #2d635c8f;
+    border-radius: 10px;
+    color: rgb(255, 255, 255);
+}
+
+/* Login page */
+#login-form {
+    text-align: center;
+    color:#119785;
+    font-family: "Bubblegum Sans", cursive;
+    padding: 1px;
+    min-width: 320px;
+    max-width: 400px;
+}
+
+#login-button{
+    background-color: #119785;
+    border: 1px solid #2d635c8f;
+    border-radius: 10px;
+    color: rgb(255, 255, 255);
+}
+
+/* Alert Flashing */
+.alert {
+    color: #f8f9fa;
+    background-color: #212529;
+}
+
+/* Post Page Styling */
+#post-title{
+    font-family: "Bubblegum Sans", cursive;
+    color: #119785;
+}
+
+#post-like-button {
+    border: 2px solid #119785;
+    border-radius: 10px;
+    border-width: 10px;
+    background-color: #119785;
+}
+
+#thumb_img_styling {
+    text-decoration: none;
+    color: #ffffff;
 }
 
 /* FOOTER STYLING */

@@ -26,15 +26,14 @@
         <div class="container">
 
             <!-- Blog Header and Nav -->
-            <div class="mt-3" id="blog-header-div">
-                <div class="row justify-content-between">
-                    <div class="col-6 order-sm-second" id="logo-div">
+                <div class="row justify-content-center" id="blog-header-div">
+                    <div class="col-md-auto order-lg-second" id="logo-div">
                         <a class="blog-header-logo" href="/">
                             <img class="img-fluid" src="/static/img/brand_header.png" alt="Penny Thoughts">
                         </a>
                     </div>
-                    <div class="col pt-1 mt-auto order-sm-first" id="nav-links">
-                        <ul class="nav">
+                    <div class="col-lg-3 col-md-7 col-sm-6 pt-1 mt-auto order-lg-first" id="nav-links">
+                        <ul class="nav justify-content-sm-start justify-content-center">
                             <li class="nav-item">
                                 <a class="nav-link active" id="header-nav-link" href="/about">About</a>
                             </li>
@@ -43,8 +42,8 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="col pt-1 mt-auto">
-                        <ul class="nav justify-content-end order-sm-last" id="nav-links">
+                    <div class="col-lg-3 col-md-3 col-sm-4 pt-1 mt-auto">
+                        <ul class="nav justify-content-sm-end justify-content-center order-md-last" id="nav-links">
                             <li class="nav-item">
                                 {% if current_user.is_authenticated%}
                                 <a class="nav-link active" id="header-nav-link" href="{{ url_for('user', username=current_user.username) }}">Profile</a>
@@ -62,7 +61,6 @@
                         </ul>
                     </div>
                 </div>
-            </div>
             <br>
             {% block body %}{% endblock %}
     </main>
@@ -75,7 +73,6 @@
                     <a href="https://www.facebook.com/Penny-Thoughts-114117044053041" class="fa fa-facebook" id="SM-links"></a>
                     <a href="https://twitter.com/PennyTh89436650" class="fa fa-twitter" id="SM-links"></a>
                     <a href="https://www.instagram.com/__penny_thoughts__/" class="fa fa-instagram" id="SM-links"></a>
-                    <a href="#" class="fa fa-linkedin" id="SM-links"></a>
                 </p>
                 <div class="text-center mb-3">
                     <a href="/contact" id="SM-links" class="text-center">Contact</a>
@@ -85,4 +82,4 @@
     </footer>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
-</html>
+</html>`

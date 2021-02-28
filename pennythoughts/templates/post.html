@@ -7,58 +7,119 @@
 {% block body %}
 
 <!-- Alert Flashing -->
-    <!-- Code sourced from https://getbootstrap.com/docs/5.0/components/alerts/ and customised to enhance functionality and incorporate into my website design -->
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    {% for message in messages %}
-    <div class="alert alert-dismissible fade show mb-0 bg-dark text-light" role="alert">
-        {{ message }}
-        <div>
-            <button type="button" class="btn-close mb-0" data-bs-dismiss="alert" aria-label="Close "></button>
-        </div>
-        {% endfor %}
-    </div>
-    {% endif %}
-    {% endwith %}
-<br>
-
-<div class="container text-light">
-    <p>"{{ post.title }}" &nbsp Author: {{ post.user.username }} {{ post.likes.count() }} Likes</p>
-    <img src="{{ url_for('static', filename='img/' + post.image_file) }}" class="mr-3">
-    <p>{{ post.content }}</p>
+<!-- Code sourced from https://getbootstrap.com/docs/5.0/components/alerts/ and customised to enhance functionality and incorporate into my website design -->
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-dismissible fade show mb-0 bg-dark text-light" role="alert">
+    {{ message }}
     <div>
-        {% if current_user.is_authenticated %}
-            {% if current_user.has_liked_post(post) %}
-                <a href="{{ url_for('like_action', post_id=post.id, action='unlike') }}" class="far fa-thumbs-up"></a>
-            {% elif current_user.has_disliked_post(post) %}
-                <a href="{{ url_for('dislike_action', post_id=post.id, action='undislike') }}" class="far fa-thumbs-down"></a>
-            {% else %}
-                <a href="{{ url_for('like_action', post_id=post.id, action='like') }}" class="far fa-thumbs-up"></a>
-                <a href="{{ url_for('dislike_action', post_id=post.id, action='dislike') }}" class="far fa-thumbs-down"></a>
-            {% endif %}
-            {{ post.likes.count() }} Likes
-            {{ post.dislikes.count() }} Dislikes
-        {% else %}
-        {{ post.likes.count() }} Likes
-        {{ post.dislikes.count() }} Dislikes
-        {% endif %}
+        <button type="button" class="btn-close mb-0" data-bs-dismiss="alert" aria-label="Close "></button>
     </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+<main class="container-fluid bg-dark">
+    <!-- Avatar section -->
+    <div class="p-4" id="post-bubble">
+        <div class="container text-dark lh-sm">
+            <div class="clearfix">
+                <p>
+                <h2 id="post-title">{{ post.title }}</h2>
+                <p>Written by {{ post.user.username }} on {{ post.date.strftime('%d, %b, %y') }}</p>
+                <img src="{{ url_for('static', filename='img/' + post.image_file) }}"
+                    class="col-md-6 float-md-end mb-3 ms-md-3 img-fluid">
+                <p>{{ post.content }}</p>
+
+                <div>
+                    {% if current_user.is_authenticated %}
+                    {% if current_user.has_liked_post(post) %}
+                    <p>
+                        Change your Rating:
+                    </p>
+                    <div class="row">
+                        <div class="col-1">
+                            <button class="" id="post-like-button">
+                                <a href="{{ url_for('like_action', post_id=post.id, action='unlike') }}"
+                                    class="fas fa-thumbs-up" id="thumb_img_styling"></a>
+                            </button>
+                        </div>
+                    {% elif current_user.has_disliked_post(post) %}
+                    <p>
+                        Change your Rating:
+                    </p>
+                    <div class="row">
+                        <div class="col-1">
+                            <button class="" id="post-like-button">
+                                <a href="{{ url_for('like_action', post_id=post.id, action='like') }}"
+                                    class="far fa-thumbs-up" id="thumb_img_styling"></a>
+                            </button>
+                        </div>
+                    </div>
+                    {% else %}
+                    <p>
+                        Did you like this post?
+                    </p>
+                    <div class="row">
+                        <div class="col-1">
+                            <button class="" id="post-like-button">
+                                <a href="{{ url_for('like_action', post_id=post.id, action='like') }}"
+                                    class="far fa-thumbs-up" id="thumb_img_styling"></a>
+                            </button>
+                        </div>
+                        <div class="col-1">
+                            <button class="" id="post-like-button">
+                                <a href="{{ url_for('dislike_action', post_id=post.id, action='dislike') }}"
+                                    class="far fa-thumbs-down" id="thumb_img_styling"></a>
+                            </button>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% else %}
+                    Please log in to leave a like.
+                    {% endif %}
+                </div>
+            </div>
+            <br>
+        </div>
+    </div>
+    <br>
+    <br>
+    <h4 id="post-title">Comments</h4>
 
     {% for comment in comments %}
-    <p>"{{ comment.content }}"&nbsp&nbspAuthor: {{ comment.owns.username }}</p>
-    {% endfor %}
-    <form method="POST" action="{{ url_for('post_comment', post_id=post.id) }}">
-        {{ form.hidden_tag() }}
-        <div class="">
-            {{ form.comment.label }} {{ form.comment }}
-            {% for error in form.comment.errors %}<span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
+    <div class="p-4" id="post-bubble">
+        <div class="row">
+            <div class="col-2">
+
+            </div>
+            <div class="col-10">
+            </div>
+            <p>"{{ comment.content }}"&nbsp&nbspAuthor: {{ comment.owns.username }} {{ comment.owns.email }}</p>
         </div>
-        <div class="">{{ form.submit() }}</div>
-    </form>
-</div>
-<br>
-<br>
-<br>
-<br>
+    </div>
+    <br>
+    {% endfor %}
+    <div class="p-4" id="post-bubble">
+        <form method="POST" action="{{ url_for('post_comment', post_id=post.id) }}">
+            {{ form.hidden_tag() }}
+            <div class="">
+                {{ form.comment.label }} {{ form.comment }}
+                {% for error in form.comment.errors %}<span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+            <div class="">{{ form.submit() }}</div>
+        </form>
+    </div>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+</main>
 {% endblock body %}

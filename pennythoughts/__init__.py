@@ -7,6 +7,8 @@ from flask_script import Manager
 from flask_mail import Mail
 
 
+
+
 app = Flask(__name__)
 
 login_manager = LoginManager()

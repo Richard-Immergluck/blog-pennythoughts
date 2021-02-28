@@ -1,12 +1,14 @@
 from datetime import datetime
 from pennythoughts import app, db
-from pennythoughts.models import Likes, User, Post, Todolist, Comment, Tag
+from pennythoughts.models import Likes, User, Post, Comment, Tag
 from pennythoughts.forms import ContactForm, RegistrationForm, LoginForm, CommentForm
 from flask import render_template, url_for, request, redirect, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from sqlalchemy import desc, asc
 from sqlalchemy.sql import func
 from flask_mail import Message, Mail
+from hashlib import md5
+
 
 client_hour = datetime.now().hour
 if client_hour < 12:
@@ -18,60 +20,64 @@ else:
 
 @app.route('/')
 
-@app.route('/user/<username>')
-@login_required
-def user(username):
-    user = User.query.filter_by(username=username).first_or_404()
-    posts = Post.query.order_by(desc(Post.date)).all()
-    tag = Tag.query.all()
-    return render_template('user.html', greeting=greet, user=user, posts=posts, tag=tag)
-
 @app.route('/home')
 def home():
     tag = Tag.query.all()
     query = request.args.get('query')
     if query:
-        posts = Post.query.filter(Post.title.contains(query) | Post.content.contains(query))
+        result1 = Post.query.filter(Post.title.contains(query)).first()
+        result2 = Post.query.filter(Post.content.contains(query)).first()
+        print(result1)
+        if result1 or result2:
+            posts = Post.query.filter(Post.title.contains(query) | Post.content.contains(query))
+        else:    
+            flash("Your search yielded no results, please try again!")
+            return redirect(url_for('home'))                   
     else:
-        posts = Post.query.order_by(desc(Post.date)).limit(10).all()
+        posts = Post.query.order_by(desc(Post.date)).limit(10).all()        
     return render_template('home.html', greeting=greet, posts=posts, tag=tag)
+
 
 @app.route('/home/newest')
 def newest():
+    tag = Tag.query.all()
     query = request.args.get('query')
     if query:
         posts = Post.query.filter(Post.title.contains(query) | Post.content.contains(query))
     else:
         posts = Post.query.order_by(desc(Post.date)).limit(10).all()
-    return render_template('newest.html', greeting=greet, posts=posts)
+    return render_template('newest.html', greeting=greet, posts=posts, tag=tag)
 
 @app.route('/home/oldest')
 def oldest():
+    tag = Tag.query.all()
     query = request.args.get('query')
     if query:
         posts = Post.query.filter(Post.title.contains(query) | Post.content.contains(query))
     else:
         posts = Post.query.order_by(asc(Post.date)).limit(10).all()
-    return render_template('oldest.html', greeting=greet, posts=posts)
+    return render_template('oldest.html', greeting=greet, posts=posts, tag=tag)
 
 @app.route('/home/commented')
 def commented():
+    tag = Tag.query.all()
     query = request.args.get('query')
     if query:
         posts = Post.query.filter(Post.title.contains(query) | Post.content.contains(query))
     else:
-        posts = posts = Post.query.join(Comment).group_by(Post.id).order_by(func.count().desc()).limit(10).all()
-    return render_template('commented.html', greeting=greet, posts=posts)
+        posts = Post.query.join(Comment).group_by(Post.id).order_by(func.count().desc()).limit(10).all()
+    return render_template('commented.html', greeting=greet, posts=posts, tag=tag)
 
 @app.route('/home/likes')
 def likes():
+    tag = Tag.query.all()
     query = request.args.get('query')
     
     if query:
         posts = Post.query.filter(Post.title.contains(query) | Post.content.contains(query))
     else:
         posts = Post.query.join(Likes).group_by(Post.id).order_by(func.count().desc()).limit(10).all()
-    return render_template('likes.html', greeting=greet, posts=posts)
+    return render_template('likes.html', greeting=greet, posts=posts, tag=tag)
 
 @app.route('/about')
 def about():
@@ -79,14 +85,16 @@ def about():
 
 @app.route('/allposts')
 def allposts():
+    tag = Tag.query.all()
     posts = Post.query.all()
-    return render_template('allposts.html', posts=posts, greeting = greet)
+    return render_template('allposts.html', posts=posts, greeting=greet, tag=tag)
 
 @app.route("/post/<int:post_id>")
 def post(post_id):
     post = Post.query.get_or_404(post_id)
-    comments = Comment.query.order_by(Comment.date.desc())
+    comments = Comment.query.filter_by(post_id=post_id).order_by(desc(Comment.date)).all()
     form = CommentForm()
+    print(post_id)
     return render_template('post.html', post=post, comments=comments, form=form, greeting=greet)
 
 @app.route('/post/<int:post_id>/comment', methods=['GET', 'POST'])
@@ -179,47 +187,20 @@ def contact():
     elif request.method == 'GET':
         return render_template('contact.html', form=form, )
 
+@app.route('/user/<username>')
+@login_required
+def user(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    most_recent_comment = Comment.query.filter_by(author_id=user.id).order_by(desc(Comment.date)).first()
+    comment = most_recent_comment.content
     
-
-@app.route('/todolist', methods=['POST','GET'])
-def todolist():
-    if request.method == 'POST':
-        task_content = request.form['content']
-        new_task = Todolist(content=task_content)
-
-        try:
-            db.session.add(new_task)
-            db.session.commit()
-            return redirect('todolist')
-        except:
-            return 'There was an error'
-    else:
-        tasks = Todolist.query.order_by(Todolist.date_created).all()
-        return render_template('todolist.html', task = tasks, greeting = greet)
-
-@app.route('/delete/<int:id>')
-
-def delete(id):
-    task_to_delete = Todolist.query.get_or_404(id)
-    try:
-        db.session.delete(task_to_delete)
-        db.session.commit()
-        return redirect('/todolist')
-    except:
-        return 'There was an error'
-
-@app.route('/update/<int:id>', methods=['GET', 'POST'])
-def update(id):
-    task = Todolist.query.get_or_404(id)
-
-    if request.method == 'POST':
-        task.content = request.form['content']
-
-        try:
-            db.session.commit()
-            return redirect('/todolist')
-        except:
-            return 'There was an issue updating your task'
-
-    else:
-        return render_template('update.html', task=task, greeting = greet)
+    # code to get the id of the most recent post commented on 
+    string = str(most_recent_comment)
+    post_id = string.split("(", 1)
+    post_id_string = post_id[1]
+    final = post_id_string.split("'", 1)
+    post_id_number = final[0]
+    post = Post.query.filter_by(id=post_id_number).order_by(desc(Post.date)).first()
+    post_title = post.title
+    
+    return render_template('user.html', greeting=greet, post=post, user=user, most_recent_comment=most_recent_comment, post_title=post_title, comment=comment)

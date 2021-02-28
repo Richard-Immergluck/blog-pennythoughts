@@ -7,13 +7,12 @@
 {% block body %}
 <br>
 <div class="container">
-    <div class="row">
-        <div class="col align-self-start">
-        </div>
-        <div class="col align-self-center">
-            <form class="form-signin mt-4 mb-4" method="POST" action="/login">
+    <div class="row row-cols-xs-1 justify-content-center">
+        <div class="col col-sm-auto border order-sm-second justify-content-center" id="login-form">
+            <form class="container" method="POST" action="/login">
+                <br>
                 <img src="/static/img/padlock-icon.jpg" alt="" height="50" width="50" class="mb-2">
-                <h2 class="h3 mb-0 font-weight-normal text-light">Login</h2>
+                <h2 class="mb-3">Login</h2>
                 {{ form.csrf_token }}
                 <br>
                 {{ form_template(form.email, placeholder=form.email.label.text) }}
@@ -30,11 +29,9 @@
                     {% endif %}
                     {% endwith %}
                 </span>
-                <br>
-                <button class="btn btn-lg btn-primary btn-block mt-3" type="submit">Login</button>
+                <button class="btn btn-lg btn-block mt-3" id="login-button" type="submit">Login</button>
             </form>
-        </div>
-        <div class="col align-self-end">
+            <br>
         </div>
     </div>
 </div>
