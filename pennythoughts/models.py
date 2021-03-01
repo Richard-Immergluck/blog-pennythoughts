@@ -2,7 +2,6 @@ from datetime import datetime
 from time import time
 from sqlalchemy.orm import backref
 from pennythoughts import login_manager, db
-# from pennythoughts.models import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from hashlib import md5
@@ -50,13 +49,14 @@ class Comment(db.Model):
     content = db.Column(db.Text, nullable=False)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    emailforavatar = db.Column(db.String(120), nullable=False)
     
     def __repr__(self):
         return f"Post({self.post_id}'{self.date}', '{self.content}')"
-
-    # def avatar(size):
-    #     avatar = md5(User.email.lower().encode('utf-8')).hexdigest()
-    #     return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(avatar, size)
+        
+    def avatar(self, size):
+        avatar = md5(self.emailforavatar.lower().encode('utf-8')).hexdigest()
+        return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(avatar, size)
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)

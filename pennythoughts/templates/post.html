@@ -27,7 +27,6 @@
     <div class="p-4" id="post-bubble">
         <div class="container text-dark lh-sm">
             <div class="clearfix">
-                <p>
                 <h2 id="post-title">{{ post.title }}</h2>
                 <p>Written by {{ post.user.username }} on {{ post.date.strftime('%d, %b, %y') }}</p>
                 <img src="{{ url_for('static', filename='img/' + post.image_file) }}"
@@ -91,14 +90,13 @@
 
         <h4 id="post-title">Comments</h4>
         {% for comment in comments %}
-        <div class="container">
+        <div class="container" id="comment-bubble">
             <div class="row">
-                <div class="col-auto" id="comment-bubble">
-                    <span>"{{ comment.content }}" <br> &nbsp&nbsp&nbsp&nbspAuthor:&nbsp{{ comment.owns.username }}
-                    </span>
+                <div class="col-2">
+                    <img src="{{ comment.avatar(50) }}" class="img-fluid" id="comment-avatar">
                 </div>
-                <div class="col-2 img-fluid" id="avatar-div">
-
+                <div class="col pt-1">
+                    <p class="lh-sm p-2">{{ comment.owns.username }} on {{ comment.date.strftime('%d, %b, %y') }} <br><br>"{{ comment.content }}"</p>
                 </div>
             </div>
         </div>

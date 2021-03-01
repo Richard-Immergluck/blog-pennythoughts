@@ -93,6 +93,7 @@ def post(post_id):
     post = Post.query.get_or_404(post_id)
     comments = Comment.query.filter_by(post_id=post_id).order_by(desc(Comment.date)).all()
     form = CommentForm()
+
     return render_template('post.html', post=post, comments=comments, form=form, greeting=greet)
 
 @app.route('/post/<int:post_id>/comment', methods=['GET', 'POST'])
@@ -101,7 +102,7 @@ def post_comment(post_id):
     post=Post.query.get_or_404(post_id)
     form=CommentForm()
     if form.validate_on_submit():
-        db.session.add(Comment(content=form.comment.data, post_id=post.id, author_id=current_user.id))
+        db.session.add(Comment(content=form.comment.data, post_id=post.id, author_id=current_user.id, emailforavatar=current_user.email))
         db.session.commit()
         flash('Your comment has been added to the post', 'good')
         return redirect(f'/post/{post.id}')
