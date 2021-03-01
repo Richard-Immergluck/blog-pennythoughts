@@ -194,12 +194,14 @@ def user(username):
 
     
     # code to get the id of the most recent post commented on 
-    string = str(most_recent_comment)
-    post_id = string.split("(", 1)
-    post_id_string = post_id[1]
-    final = post_id_string.split("'", 1)
-    post_id_number = final[0]
-    post = Post.query.filter_by(id=post_id_number).order_by(desc(Post.date)).first()
-    post_title = post.title
-    
-    return render_template('user.html', greeting=greet, post=post, user=user, most_recent_comment=most_recent_comment, post_title=post_title)
+    if most_recent_comment:
+        string = str(most_recent_comment)
+        post_id = string.split("(", 1)
+        post_id_string = post_id[1]
+        final = post_id_string.split("'", 1)
+        post_id_number = final[0]
+        post = Post.query.filter_by(id=post_id_number).order_by(desc(Post.date)).first()
+        post_title = post.title
+        return render_template('user.html', greeting=greet, post=post, user=user, most_recent_comment=most_recent_comment, post_title=post_title)
+    else:
+        return render_template('user.html', greeting=greet, user=user)

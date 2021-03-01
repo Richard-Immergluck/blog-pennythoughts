@@ -82,6 +82,11 @@ a.post-title {
     font-size: small;
 }
 
+#post-pic {
+    max-width: 300px;
+    max-height: 300px;
+}
+
 #comment-bubble {
     background-color: rgb(199, 199, 199);
     border: 2px solid #119785;

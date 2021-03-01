@@ -30,7 +30,7 @@
                 <h2 id="post-title">{{ post.title }}</h2>
                 <p>Written by {{ post.user.username }} on {{ post.date.strftime('%d, %b, %y') }}</p>
                 <img src="{{ url_for('static', filename='img/' + post.image_file) }}"
-                    class="col-md-6 float-md-end mb-3 ms-md-3 img-fluid">
+                    class="col-md-6 float-md-end mb-3 ms-md-3 img-fluid" id="post-pic">
                 <p>{{ post.content }}</p>
 
                 <div>

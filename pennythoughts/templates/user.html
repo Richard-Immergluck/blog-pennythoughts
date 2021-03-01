@@ -53,7 +53,7 @@
     </div>
     <br>
     <br>
-
+{% if most_recent_comment %}
     <h4 id="post-title">Your most recent comment:</h4>
         <div class="container">
             <div class="row">
@@ -67,6 +67,7 @@
         </div>
         <br>
     <br>
+
 
     <h4 id="post-title">The most recent post you commented on:</h4>
     <div class="p-4" id="post-bubble">
@@ -105,5 +106,8 @@
         </div>
     </div>
     <br>
+{% endif %}
+<p class="text-light">Content will appear here when you make your first post!</p>
 </main>
+
 {% endblock %}
