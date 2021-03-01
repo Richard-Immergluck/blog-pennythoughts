@@ -16,6 +16,7 @@
                 {{ form.csrf_token }}
                 <br>
                 {{ form_template(form.email, placeholder=form.email.label.text) }}
+                
                 {{ form_template(form.password, placeholder=form.password.label.text) }}
                 {% for error in form.email.errors %}
                 <span style="color: red;">[{{ error }}]</span>

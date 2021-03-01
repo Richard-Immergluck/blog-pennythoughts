@@ -47,6 +47,7 @@
     text-decoration: none;
     color: black;
 }
+
 /* anchor styling */
 a.post-title {
     text-decoration: none;
@@ -81,6 +82,11 @@ a.post-title {
     font-size: small;
 }
 
+#comment-bubble {
+    background-color: rgb(199, 199, 199);
+    border: 2px solid #119785;
+    border-radius: 10px;
+}
 
 /* Registration page */
 
@@ -155,10 +161,10 @@ a.post-title {
     padding: 20px;
     font-size: 20px;
     width: 50px;
-    }
+}
 
     /* On Hover */
-    .fa:hover {
+.fa:hover {
     opacity: 0.7;
-    }
+}
 

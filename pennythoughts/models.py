@@ -1,13 +1,15 @@
 from datetime import datetime
 from time import time
-import re
 from sqlalchemy.orm import backref
 from pennythoughts import login_manager, db
+# from pennythoughts.models import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from hashlib import md5
+import re
 
-# function to create urls for slugs
+
+# function to create urls for slugs for tags class
 def slugify(s):
     RegEx = r'[^\w+]'
     return re.sub(RegEx, '-', s)
@@ -51,6 +53,10 @@ class Comment(db.Model):
     
     def __repr__(self):
         return f"Post({self.post_id}'{self.date}', '{self.content}')"
+
+    # def avatar(size):
+    #     avatar = md5(User.email.lower().encode('utf-8')).hexdigest()
+    #     return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(avatar, size)
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -71,8 +71,7 @@ def commented():
 @app.route('/home/likes')
 def likes():
     tag = Tag.query.all()
-    query = request.args.get('query')
-    
+    query = request.args.get('query') 
     if query:
         posts = Post.query.filter(Post.title.contains(query) | Post.content.contains(query))
     else:
@@ -94,7 +93,6 @@ def post(post_id):
     post = Post.query.get_or_404(post_id)
     comments = Comment.query.filter_by(post_id=post_id).order_by(desc(Comment.date)).all()
     form = CommentForm()
-    print(post_id)
     return render_template('post.html', post=post, comments=comments, form=form, greeting=greet)
 
 @app.route('/post/<int:post_id>/comment', methods=['GET', 'POST'])
@@ -192,7 +190,7 @@ def contact():
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     most_recent_comment = Comment.query.filter_by(author_id=user.id).order_by(desc(Comment.date)).first()
-    comment = most_recent_comment.content
+
     
     # code to get the id of the most recent post commented on 
     string = str(most_recent_comment)
@@ -203,4 +201,4 @@ def user(username):
     post = Post.query.filter_by(id=post_id_number).order_by(desc(Post.date)).first()
     post_title = post.title
     
-    return render_template('user.html', greeting=greet, post=post, user=user, most_recent_comment=most_recent_comment, post_title=post_title, comment=comment)
+    return render_template('user.html', greeting=greet, post=post, user=user, most_recent_comment=most_recent_comment, post_title=post_title)
