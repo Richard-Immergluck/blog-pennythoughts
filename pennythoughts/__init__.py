@@ -2,7 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_moment import Moment
-from flask_migrate import Migrate, MigrateCommand
+# from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
 from flask_mail import Mail
 
@@ -19,11 +19,11 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://c21022750:59djiCtLrWzzv
 db = SQLAlchemy(app)
 
 # Object for Migration Engine
-migrate = Migrate(app, db)
+# migrate = Migrate(app, db)
 
 
-manager = Manager(app)
-manager.add_command('db', MigrateCommand)
+# manager = Manager(app)
+# manager.add_command('db', MigrateCommand)
 
 # For Moment date/time functions
 moment = Moment(app)

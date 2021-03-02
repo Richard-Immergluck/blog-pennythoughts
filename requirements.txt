@@ -7,7 +7,6 @@ flask-admin==1.5.7
 flask-avatars==0.2.2
 flask-login==0.5.0
 flask-mail==0.9.1
-flask-migrate==2.7.0
 flask-moment==0.11.0
 flask-mysql==1.5.2
 flask-script==2.0.6
