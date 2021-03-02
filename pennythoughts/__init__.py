@@ -41,7 +41,6 @@ admin.add_view(AdminView(Tag, db.session))
 
 
 # Flask Mail Extension config
-
 mail = Mail()
 
 app.config["MAIL_SERVER"] = "smtp.gmail.com"

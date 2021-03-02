@@ -4,7 +4,9 @@ env/
 .vscode/
 info.docs/
 Photoshop work/
+migrations/
 
 # files
 package-lock.json
 package.json
+requirements-original.txt
