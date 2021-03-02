@@ -92,15 +92,14 @@
                 </div>
                 {% endif %}
                 <div class="row">
-                    <div class="col-2">
+                    <div class="col-md-3">
                         <a href="{{ url_for('post', post_id=post.id) }}" id="like-button"><i class="far fa-heart">&nbsp&nbsp{{
                                 post.likes.count() }}&nbsp&nbsplikes</i></a>
                     </div>
-                    <div class="col-2">
+                    <div class="col-md-3">
                         <a href="{{ url_for('post', post_id=post.id) }}"><i class="far fa-comment-dots" id="like-button">&nbsp&nbsp{{
                                 post.comments.count() }}&nbsp&nbspComments</i></a>
                     </div>
-                    <div class="col-sm"></div>
                 </div>
             </div>
             <br>
