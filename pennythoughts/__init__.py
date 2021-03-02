@@ -26,7 +26,7 @@ db = SQLAlchemy(app)
 # manager.add_command('db', MigrateCommand)
 
 # For Moment date/time functions
-moment = Moment(app)
+# moment = Moment(app)
 
 from pennythoughts import routes, models
 
@@ -41,6 +41,7 @@ admin.add_view(AdminView(Tag, db.session))
 
 
 # Flask Mail Extension config
+# This code has been taken from https://pythonhosted.org/Flask-Mail/, accessed 22.02.21
 mail = Mail()
 
 app.config["MAIL_SERVER"] = "smtp.gmail.com"

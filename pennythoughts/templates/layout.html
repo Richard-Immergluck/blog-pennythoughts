@@ -1,76 +1,78 @@
 <!DOCTYPE html>
 <html>
 
+<!-- Header -->
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="/static/css/main.css">
 
+    <!-- Stylesheet for google fonts database. First accessed 15.02.21 -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
-    <!-- This is a link to the google fonts database some of which I am using within the site -->
 
+    <!-- Script for retrieving icons from FontAwesome repository. https://fontawesome.com/icons?d=gallery first accessed 15.02.21  -->
     <script src="https://kit.fontawesome.com/f7cf759d6f.js" crossorigin="anonymous"></script>
-    <!-- This script relates to a repository of icons which I am using throughout my website.
-    The repository can be found at https://fontawesome.com/icons?d=gallery  -->
 
     <title>{% block title %}{% endblock %}</title>
-    
-    {{ moment.include_jquery() }}
-    {{ moment.include_moment() }}
-
 </head>
+<!-- Header end -->
 
-<!-- Body -->
+<!-- Background -->
 <body class="bg-dark">
+
+    <!-- Main content -->
     <main class="flex-shrink-0">
         <div class="container">
 
             <!-- Blog Header and Nav -->
-                <div class="row justify-content-center" id="blog-header-div">
-                    <div class="col-md-auto order-lg-second" id="logo-div">
-                        <a class="blog-header-logo" href="/">
-                            <img class="img-fluid" src="/static/img/brand_header.png" alt="Penny Thoughts">
-                        </a>
-                    </div>
-                    <div class="col-lg-3 col-md-7 col-sm-6 pt-1 mt-auto order-lg-first" id="nav-links">
-                        <ul class="nav justify-content-sm-start justify-content-center">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="header-nav-link" href="/about">About</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active" id="header-nav-link" href="/allposts">Posts</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-3 col-md-3 col-sm-4 pt-1 mt-auto">
-                        <ul class="nav justify-content-sm-end justify-content-center order-md-last" id="nav-links">
-                            <li class="nav-item">
-                                {% if current_user.is_authenticated%}
-                                <a class="nav-link active" id="header-nav-link" href="{{ url_for('user', username=current_user.username) }}">Profile</a>
-                                {% else %}
-                                <a class="nav-link active" id="header-nav-link" href="/login">Login</a>
-                                {% endif %}
-                            </li>
-                            <li class="nav-item">
-                                {% if current_user.is_authenticated%}
-                                <a class="nav-link active" id="header-nav-link" href="/logout">Logout</a>
-                                {% else %}
-                                <a class="nav-link active" id="header-nav-link" href="/register">Register</a>
-                                {% endif %}
-                            </li>
-                        </ul>
-                    </div>
+            <div class="row justify-content-center" id="blog-header-div">
+                <div class="col-md-auto order-lg-second" id="logo-div">
+                    <a class="blog-header-logo" href="/">
+                        <img class="img-fluid" src="/static/img/brand_header.png" alt="Penny Thoughts">
+                    </a>
                 </div>
+                <div class="col-lg-3 col-md-7 col-sm-6 pt-1 mt-auto order-lg-first" id="nav-links">
+                    <ul class="nav justify-content-sm-start justify-content-center">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="header-nav-link" href="/about">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" id="header-nav-link" href="/allposts">Posts</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-4 pt-1 mt-auto">
+                    <ul class="nav justify-content-sm-end justify-content-center order-md-last" id="nav-links">
+                        <li class="nav-item">
+                            {% if current_user.is_authenticated%}
+                            <a class="nav-link active" id="header-nav-link"
+                                href="{{ url_for('user', username=current_user.username) }}">Profile</a>
+                            {% else %}
+                            <a class="nav-link active" id="header-nav-link" href="/login">Login</a>
+                            {% endif %}
+                        </li>
+                        <li class="nav-item">
+                            {% if current_user.is_authenticated%}
+                            <a class="nav-link active" id="header-nav-link" href="/logout">Logout</a>
+                            {% else %}
+                            <a class="nav-link active" id="header-nav-link" href="/register">Register</a>
+                            {% endif %}
+                        </li>
+                    </ul>
+                </div>
+            </div><!-- Blog Header and Nav end -->
             <br>
             {% block body %}{% endblock %}
-    </main>
+    </main><!-- Main content end -->
 
     <!-- Footer -->
     <footer class="fixed-bottom" id="footer-custom">
         <div class="container-flex">
             <div>
                 <p class="row justify-content-center">
-                    <a href="https://www.facebook.com/Penny-Thoughts-114117044053041" class="fa fa-facebook" id="SM-links"></a>
+                    <a href="https://www.facebook.com/Penny-Thoughts-114117044053041" class="fa fa-facebook"
+                        id="SM-links"></a>
                     <a href="https://twitter.com/PennyTh89436650" class="fa fa-twitter" id="SM-links"></a>
                     <a href="https://www.instagram.com/__penny_thoughts__/" class="fa fa-instagram" id="SM-links"></a>
                 </p>
@@ -79,7 +81,14 @@
                 </div>
             </div>
         </div>
-    </footer>
-</body>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+    </footer><!-- Footer -->
+
+</body><!-- Background end-->
+
+<!-- Script for loading bootstrap js functionality https://getbootstrap.com/docs/5.0/getting-started/introduction/
+    first accessed 29.01.21 -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
+    crossorigin="anonymous"></script>
+
 </html>

@@ -1,44 +1,45 @@
 {% from "_form_template.html" import form_template %}
 {% extends "layout.html" %}
 
-{% block title %}
-{{ post.title }}
-{% endblock %}
+<!-- Title -->
+{% block title %} {{ post.title }} {% endblock %}
 
 {% block body %}
 
 <!-- Alert Flashing -->
-<!-- Code sourced from https://getbootstrap.com/docs/5.0/components/alerts/ and customised to enhance functionality and incorporate into my website design -->
 {% with messages = get_flashed_messages() %}
 {% if messages %}
 {% for message in messages %}
 <div class="alert alert-dismissible fade show mb-0 bg-dark text-light" role="alert">
     {{ message }}
     <div>
-        <button type="button" class="btn-close mb-0" data-bs-dismiss="alert" aria-label="Close "></button>
+        <button type="button" class="btn-close btn-close-white mb-0" data-bs-dismiss="alert"
+            aria-label="Close "></button>
     </div>
     {% endfor %}
 </div>
 {% endif %}
 {% endwith %}
+<!-- Alert Flashing end -->
 
-<main class="container-fluid bg-dark">
-    <!-- Avatar section -->
-    <div class="p-4" id="post-bubble">
-        <div class="container text-dark lh-sm">
-            <div class="clearfix">
-                <h2 id="post-title">{{ post.title }}</h2>
-                <p>Written by {{ post.user.username }} on {{ post.date.strftime('%d, %b, %y') }}</p>
-                <img src="{{ url_for('static', filename='img/' + post.image_file) }}"
-                    class="col-md-6 float-md-end mb-3 ms-md-3 img-fluid" id="post-pic">
-                <p>{{ post.content }}</p>
+<!-- Post Bubble -->
+<div class="p-4" id="post-bubble">
 
-                <div>
-                    {% if current_user.is_authenticated %}
-                    {% if current_user.has_liked_post(post) %}
-                    <p>
-                        Change your Rating:
-                    </p>
+    <!-- Post -->
+    <div class="container text-dark lh-sm">
+        <div class="clearfix">
+            <h2 id="post-title">{{ post.title }}</h2>
+            <p>Written by {{ post.user.username }} on {{ post.date.strftime('%d, %b, %y') }}</p>
+            <img src="{{ url_for('static', filename='img/' + post.image_file) }}"
+                class="col-md-6 float-md-end mb-3 ms-md-3 img-fluid" id="post-pic">
+            <p>{{ post.content }}</p>
+            <!-- Post end -->
+
+            <!-- Like section -->
+            <div>
+            {% if current_user.is_authenticated %}
+                {% if current_user.has_liked_post(post) %}
+                    <p>Change your Rating:</p>
                     <div class="row">
                         <div class="col-1">
                             <button class="" id="post-like-button">
@@ -46,87 +47,87 @@
                                     class="fas fa-thumbs-up" id="thumb_img_styling"></a>
                             </button>
                         </div>
-                        {% elif current_user.has_disliked_post(post) %}
-                        <p>
-                            Change your Rating:
-                        </p>
-                        <div class="row">
-                            <div class="col-1">
-                                <button class="" id="post-like-button">
-                                    <a href="{{ url_for('like_action', post_id=post.id, action='like') }}"
-                                        class="far fa-thumbs-up" id="thumb_img_styling"></a>
-                                </button>
-                            </div>
-                        </div>
-                        {% else %}
-                        <p>
-                            Did you like this post?
-                        </p>
-                        <div class="row">
-                            <div class="col-1">
-                                <button class="" id="post-like-button">
-                                    <a href="{{ url_for('like_action', post_id=post.id, action='like') }}"
-                                        class="far fa-thumbs-up" id="thumb_img_styling"></a>
-                                </button>
-                            </div>
-                            <div class="col-1">
-                                <button class="" id="post-like-button">
-                                    <a href="{{ url_for('dislike_action', post_id=post.id, action='dislike') }}"
-                                        class="far fa-thumbs-down" id="thumb_img_styling"></a>
-                                </button>
-                            </div>
-                        </div>
-                        {% endif %}
-                        {% else %}
-                        Please <a href="/login" id="log in">Log in</a> to leave a like.
-                        {% endif %}
                     </div>
-                </div>
-                <br>
-            </div>
-        </div>
-        <br>
-        <br>
-
-        <h4 id="post-title">Comments</h4>
-        {% for comment in comments %}
-        <div class="container" id="comment-bubble">
-            <div class="row">
-                <div class="col-2">
-                    <img src="{{ comment.avatar(50) }}" class="img-fluid" id="comment-avatar">
-                </div>
-                <div class="col pt-1">
-                    <p class="lh-sm p-2">{{ comment.owns.username }} on {{ comment.date.strftime('%d, %b, %y') }} <br><br>"{{ comment.content }}"</p>
-                </div>
-            </div>
-        </div>
-        <br>
-        {% endfor %}
-        <br>
-        <h4 id="post-title">Leave a Comment</h4>
-        <div class="p-4" id="post-bubble">
-            <form method="POST" action="{{ url_for('post_comment', post_id=post.id) }}">
-                {{ form.hidden_tag() }}
-                <div class="">
-                    {{ form_template(form.comment, placeholder=form.comment.label.text) }}
-                    {% for error in form.comment.errors %}
-                    <span style="color: red;">[{{ error }}]</span>
-                    {% endfor %}
-                </div>
-                <div class="row justify-content-center">
-                    <div class="col-3">
-                        <button class="" id="post-like-button" type="submit" value="Register">Comment</button>
+                {% elif current_user.has_disliked_post(post) %}
+                    <p>Change your Rating:</p>
+                    <div class="row">
+                        <div class="col-1">
+                            <button class="" id="post-like-button">
+                                <a href="{{ url_for('dislike_action', post_id=post.id, action='undislike') }}"
+                                    class="fas fa-thumbs-down" id="thumb_img_styling"></a>
+                            </button>
+                        </div>
                     </div>
+                {% else %}
+                    <p>
+                        Did you like this post?
+                    </p>
+                    <div class="row">
+                        <div class="col-1">
+                            <button class="" id="post-like-button">
+                                <a href="{{ url_for('like_action', post_id=post.id, action='like') }}"
+                                    class="far fa-thumbs-up" id="thumb_img_styling"></a>
+                            </button>
+                        </div>
+                        <div class="col-1">
+                            <button class="" id="post-like-button">
+                                <a href="{{ url_for('dislike_action', post_id=post.id, action='dislike') }}"
+                                    class="far fa-thumbs-down" id="thumb_img_styling"></a>
+                            </button>
+                        </div>
+                    </div>
+                {% endif %}
+            {% else %}
+            Please <a href="/login" id="log in">Log in</a> to leave a like.
+            {% endif %}
                 </div>
-            </form>
+            </div><!-- Like section end -->
+            <br>
         </div>
     </div>
     <br>
     <br>
+
+    <!-- Comments section -->
+    <h4 id="post-title">Comments</h4>
+    {% for comment in comments %}
+    <div class="container" id="comment-bubble">
+        <div class="row">
+            <div class="col-2">
+                <img src="{{ comment.avatar(50) }}" class="img-fluid" id="comment-avatar">
+            </div>
+            <div class="col pt-1">
+                <p class="lh-sm p-2">{{ comment.owns.username }} on {{ comment.date.strftime('%d, %b, %y') }}
+                    <br><br>"{{ comment.content }}"</p>
+            </div>
+        </div>
+    </div>
     <br>
+    {% endfor %}
     <br>
-    <br>
-    <br>
-    <br>
-</main>
+    <h4 id="post-title">Leave a Comment</h4>
+    <div class="p-4" id="post-bubble">
+        <form method="POST" action="{{ url_for('post_comment', post_id=post.id) }}">
+            {{ form.hidden_tag() }}
+            <div class="">
+                {{ form_template(form.comment, placeholder=form.comment.label.text) }}
+                {% for error in form.comment.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-3">
+                    <button class="" id="post-like-button" type="submit" value="Register">Comment</button>
+                </div>
+            </div>
+        </form>
+    </div><!-- Comments section -->
+</div><!-- Post Bubble -->
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 {% endblock body %}

@@ -1,11 +1,12 @@
 {% extends "layout.html" %}
 
-{% block title %}
-Posts with "{{ tag.title}}" tag
-{% endblock %}
+{% block title %} Posts with "{{ tag.title}}" tag {% endblock %}
 
 {% block body %}
-<h1 class='text-light'>Posts with "{{ tag.title}}" tag</h1>
+<h3 id="post-title">All posts with the "{{ tag.title}}" tag:</h3>
+<br>
+
+<!-- Post Bubble -->
 {% for post in tag.posts %}
 <div class="p-4" id="post-bubble">
     <div class="row">
@@ -42,3 +43,4 @@ Posts with "{{ tag.title}}" tag
 <br>
 {% endfor %}
 {% endblock %}
+<!-- Post Bubble end-->

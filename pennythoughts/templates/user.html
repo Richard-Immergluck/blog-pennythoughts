@@ -15,27 +15,11 @@
     {% endif %}
 </div>
 <br>
-
-<!-- Alert Flashing -->
-<!-- Code sourced from https://getbootstrap.com/docs/5.0/components/alerts/ and customised to enhance functionality and incorporate into my website design -->
-<div class="container" id="flashing-div">
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    {% for message in messages %}
-    <div class="alert alert-dismissible fade show mb-0 bg-dark text-light" role="alert">
-        <p>{{ message }}</p>
-        <div>
-            <button type="button" class="btn-close mb-0" data-bs-dismiss="alert" aria-label="Close"
-                id="flash-button"></button>
-        </div>
-        {% endfor %}
-    </div>
-    {% endif %}
-    {% endwith %}
-</div>
+<!-- Greeting end -->
 
 <main class="container-fluid bg-dark">
-    <!-- Avatar section -->
+    
+    <!-- Avatar and user info section -->
     <div class="p-4" id="post-bubble">
         <div class="row">
             <div class="col-2 img-fluid" id="avatar-div">
@@ -50,10 +34,12 @@
                 <br>
             </div>
         </div>
-    </div>
+    </div><!-- Avatar and user info section end -->
     <br>
     <br>
-{% if most_recent_comment %}
+
+    <!-- Recent comment and post section -->
+    {% if most_recent_comment %}
     <h4 id="post-title">Your most recent comment:</h4>
         <div class="container">
             <div class="row">
@@ -106,8 +92,9 @@
         </div>
     </div>
     <br>
-{% endif %}
-<p class="text-light">Content will appear here when you make your first post!</p>
+    {% else %}
+    <p class="text-light">Content will appear here when you make your first comment!</p>
+    {% endif %} <!-- Recent comment and post section end -->
 </main>
 
 {% endblock %}

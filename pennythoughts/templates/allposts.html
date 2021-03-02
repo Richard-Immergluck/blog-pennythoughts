@@ -13,10 +13,11 @@
     {% endif %}
 </div>
 <br>
-<div class="container-fluid bg-dark">
+<!-- Greeting end -->
 
+<!-- Background -->
+<main class="container-fluid bg-dark">
     <!-- Alert Flashing -->
-    <!-- Code sourced from https://getbootstrap.com/docs/5.0/components/alerts/ and customised to enhance functionality and incorporate into my website design -->
     {% with messages = get_flashed_messages() %}
     {% if messages %}
     {% for message in messages %}
@@ -29,6 +30,7 @@
     </div>
     {% endif %}
     {% endwith %}
+    <!-- Alert Flashing end -->
 
     <!-- Posts Flexbox -->
     <div class="container-fluid">
@@ -64,10 +66,9 @@
                         </ul>
                     </div>
                 </div>
-            </nav>
+            </nav><!-- Post NavBar end -->
 
             <!-- List of posts -->
-
             {% for post in posts %}
             <div class="p-4" id="post-bubble">
                 <div class="row">
@@ -104,6 +105,14 @@
             </div>
             <br>
             {% endfor %}
+            <!-- List of posts end -->
         </div>
-    </div>
-    {% endblock %}
+    </div><!-- Posts Flexbox end -->
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+</main> <!-- Background end -->
+{% endblock %}

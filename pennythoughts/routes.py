@@ -93,7 +93,6 @@ def post(post_id):
     post = Post.query.get_or_404(post_id)
     comments = Comment.query.filter_by(post_id=post_id).order_by(desc(Comment.date)).all()
     form = CommentForm()
-
     return render_template('post.html', post=post, comments=comments, form=form, greeting=greet)
 
 @app.route('/post/<int:post_id>/comment', methods=['GET', 'POST'])

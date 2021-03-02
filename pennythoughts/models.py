@@ -8,7 +8,10 @@ from hashlib import md5
 import re
 
 
-# function to create urls for slugs for tags class
+# Function to create urls for slugs for tags class
+# This code was adapted from a YouTube video https://www.youtube.com/watch?v=VTOtWR7XicU, accessed 15.02.21 
+# in conjunction with the Flask tutorial documentation from the module. 
+
 def slugify(s):
     RegEx = r'[^\w+]'
     return re.sub(RegEx, '-', s)
@@ -36,6 +39,7 @@ class Tag(db.Model):
         title = db.Column(db.String(100))
         slug = db.Column(db.String(100), unique=True)
 
+        # Creating slugs
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
             self.slug = slugify(self.title)
@@ -53,7 +57,9 @@ class Comment(db.Model):
     
     def __repr__(self):
         return f"Post({self.post_id}'{self.date}', '{self.content}')"
-        
+
+    # This code was taken from https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-vi-profile-page-and-avatars 
+    # which references the following informaiton from Gravatar: https://en.gravatar.com/site/implement/hash/. Accessed 15.02.21   
     def avatar(self, size):
         avatar = md5(self.emailforavatar.lower().encode('utf-8')).hexdigest()
         return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(avatar, size)

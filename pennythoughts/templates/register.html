@@ -1,18 +1,37 @@
 {% extends "layout.html" %}
 {% from "_form_template.html" import form_template %}
 
-{% block title %}
-Register
-{% endblock %}
+{% block title %} Register {% endblock %}
+
+<!-- Alert Flashing -->
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-dismissible fade show mb-0 bg-dark text-light" role="alert">
+    {{ message }}
+    <div>
+        <button type="button" class="btn-close btn-close-white mb-0" data-bs-dismiss="alert"
+            aria-label="Close "></button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+<!-- Alert Flashing end -->
 
 {% block body %}
 <br>
+
+<!-- Registration form container -->
 <div class="container">
     <div class="row row-cols-xs-1 justify-content-center">
-        <div class="col col-sm-auto border order-sm-second justify-content-center" id="registration-form">
+        <div class="col col-sm-auto order-sm-second justify-content-center" id="registration-form">
+            
+            <!-- Registration form -->
             <form class="container" method="POST" action="">
                 <br>
-                <img src="/static/img/padlock-icon.jpg" alt="" height="50" width="50" class="mb-2">
+                <i class="fas fa-lock fa-3x" id="padlock-img"></i>
+                <br><br>
                 <h2 class="mb-3">Register</h2>
                 {{ form.csrf_token }}
                 
@@ -40,7 +59,7 @@ Register
                 <span style="color: red;">[{{ error }}]</span>
                 {% endfor %}
                 <button class="btn btn-lg btn-block mt-3" id="register-button" type="submit" value="Register">Register</button>
-            </form>
+            </form><!-- Registration form end -->
             <br>
         </div>
     </div>
@@ -50,5 +69,5 @@ Register
     <br>
     <br>
     <br>
-</div>
+</div><!-- Registration form container end -->
 {% endblock %}

@@ -8,10 +8,11 @@
 <br>
 <div class="container">
     <div class="row row-cols-xs-1 justify-content-center">
-        <div class="col col-sm-auto border order-sm-second justify-content-center" id="login-form">
+        <div class="col col-sm-auto order-sm-second justify-content-center" id="login-form">
             <form class="container" method="POST" action="/login">
                 <br>
-                <img src="/static/img/padlock-icon.jpg" alt="" height="50" width="50" class="mb-2">
+                <i class="fas fa-lock fa-3x" id="padlock-img"></i>
+                <br><br>
                 <h2 class="mb-3">Login</h2>
                 {{ form.csrf_token }}
                 <br>
