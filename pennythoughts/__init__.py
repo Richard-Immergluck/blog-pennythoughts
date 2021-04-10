@@ -12,7 +12,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 app.config['SECRET_KEY'] = '<f4b3a795f12ea88e7857c8f418c03ddcaaf3d60ebb6f76a3>'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://c21022750:59djiCtLrWzzv7Z@csmysql.cs.cf.ac.uk:3306/c21022750_pennythoughts_db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://c21022750:F6LxBcPUcWLidbn@csmysql.cs.cf.ac.uk:3306/c21022750_pennythoughts_db'
 
 # DB object that represents the database
 
