@@ -8,5 +8,5 @@ The project scored 89/100
 
 
 Module and assessment details:
-CMT120 - Fundamentals of Programming
-Web Application Development
+- CMT120-Fundamentals of Programming
+- Web Application Development
